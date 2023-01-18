@@ -7,6 +7,7 @@
     "name": "ddpn08",
     "url": "https://me.ddpn.world"
   },
+  "main": "dist/index.cjs",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ddPn08/flat"
@@ -14,7 +15,6 @@
   "files": [
     "dist/**/*"
   ],
-  "main": "dist/index.cjs",
   "scripts": {
     "build": "node ./scripts/build.js",
     "dev": "cross-env NODE_ENV=\"development\" pnpm build --bundle-only --run",
