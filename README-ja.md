@@ -1,14 +1,14 @@
 <h1 align="center">flat</h1>
 <div align="center"><img height="256px" src="./icons/icon-512x512.png" /></div>
-<p align="center">All-in-one image generation AI (to be...)</p>
+<p align="center">AI画像生成のオールインワン (になるはず...)</p>
 <br>
 <div align="center"><a href="https://github.com/ddPn08/flat/releases/latest"><img width="50%" src="./assets/download.svg" /></a></div>
 
 > **Warning**
 >
-> 🚧 This is a beta release. Unexpected errors may occur.
+> 🚧 これはベータリリースです。予期せぬエラーが発生する可能性があります。
 >
-> If you get an error, please let the developer know.
+> エラーが発生した場合は開発者にお伝えください。
 
 ---
 
@@ -22,13 +22,13 @@
 
 ---
 
-# Features
+# 機能
 
 ## AUTOMATIC1111 Stable Diffusion Webui
 
-Launch StableDiffusionWebUI with just a few clicks.
+数クリックで StableDiffusionWebUI を起動できます。
 
-No Python installation or repository cloning required!
+Python のインストールや Git の操作は必要ありません。
 
 <br >
 
@@ -38,8 +38,9 @@ No Python installation or repository cloning required!
 
 ## Image galley
 
-Displays generated images in a list with information such as prompts.
-The image folder can be set freely.
+生成した画像をプロンプト等の情報とともに一覧に表示します。
+
+画像のフォルダは自由に設定できます。
 
 ![](./assets/screenshots/galley-01.png)
 ![](./assets/screenshots/galley-02.png)
