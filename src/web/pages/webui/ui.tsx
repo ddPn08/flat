@@ -1,6 +1,6 @@
 import { useI18n } from '@solid-primitives/i18n'
 import { css, styled } from 'decorock'
-import { Component, createEffect, createSignal, Show, useContext } from 'solid-js'
+import { Component, Show, useContext } from 'solid-js'
 
 import { WebUIContext } from '.'
 
@@ -9,7 +9,7 @@ import { VStack } from '~/web/components/ui/stack'
 const Container = styled.div`
   height: 100%;
 
-  iframe {
+  webview {
     width: 100%;
     height: 100%;
     border: none;
@@ -20,10 +20,6 @@ const Container = styled.div`
 export const UI: Component = () => {
   const { url } = useContext(WebUIContext)
   const [t] = useI18n()
-  const [ref, setRef] = createSignal<HTMLIFrameElement>()
-  createEffect(() => {
-    const iframe = ref()!
-  })
   return (
     <Container>
       <Show
@@ -39,8 +35,21 @@ export const UI: Component = () => {
           </VStack>
         }
       >
-        <iframe ref={setRef} src={url()} id="iiii" />
+        <webview src={url()} />
       </Show>
     </Container>
   )
+}
+
+declare module 'solid-js' {
+  export namespace JSX {
+    export interface IntrinsicElements
+      extends HTMLElementTags,
+        HTMLElementDeprecatedTags,
+        SVGElementTags {
+      webview: {
+        src: string
+      }
+    }
+  }
 }

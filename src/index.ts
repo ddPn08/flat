@@ -55,6 +55,7 @@ const createWindow = async () => {
         minHeight: 480,
         webPreferences: {
             webSecurity: false,
+            webviewTag: true,
             nodeIntegration: true,
             contextIsolation: false,
             preload: path.join(__dirname, 'preload.cjs'),
