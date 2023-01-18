@@ -4,12 +4,12 @@ import { Component, createSignal, onMount } from 'solid-js'
 
 import { ipc } from '~/web/lib/ipc'
 
-export const Config: Component = () => {
+export const UIConfig: Component = () => {
   const theme = useTheme()
   const [ref, setRef] = createSignal<HTMLDivElement>()
 
   onMount(async () => {
-    const value = await ipc.webui.invoke('config/get')
+    const value = await ipc.webui.invoke('ui-config/get')
     const ctx = editor.create(ref()!, {
       value,
       language: 'json',
@@ -19,7 +19,7 @@ export const Config: Component = () => {
       const json = ctx.getValue()
       try {
         JSON.parse(json)
-        ipc.webui.invoke('config/save', json)
+        ipc.webui.invoke('ui-config/save', json)
       } catch (_) {
         console.log('err')
       }

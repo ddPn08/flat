@@ -1,4 +1,6 @@
 import { useI18n } from '@solid-primitives/i18n'
+import Color from 'color'
+import dayjs from 'dayjs'
 import { css, styled, useTheme } from 'decorock'
 import type { DefaultLogFields, LogResult } from 'simple-git'
 import { Component, createSignal, onCleanup, onMount, Show, useContext } from 'solid-js'
@@ -116,9 +118,9 @@ export const Launcher: Component = () => {
           <div
             class={css`
               display: flex;
-              justify-content: center;
-              align-items: center;
               flex-direction: column;
+              align-items: center;
+              justify-content: center;
               background-color: ${theme.colors.primary.fade(0.8)};
             `}
           >
@@ -130,8 +132,8 @@ export const Launcher: Component = () => {
       >
         <Log
           class={css`
-            grid-row: 1/2;
             height: 100%;
+            grid-row: 1/2;
           `}
           height="100%"
         >
@@ -141,52 +143,75 @@ export const Launcher: Component = () => {
       <div
         class={css`
           position: relative;
-          grid-row: 1/3;
-          grid-column: 2/3;
           padding: 1rem;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+          grid-column: 2/3;
+          grid-row: 1/3;
           pointer-events: ${installed() ? 'inherit' : 'none'};
           user-select: none;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         `}
       >
         <Show when={!installed()}>
           <div
             class={css`
               position: absolute;
+              z-index: 10;
               top: 0;
               left: 0;
               width: 100%;
               height: 100%;
-              z-index: 10;
               background-color: rgba(0, 0, 0, 0.5);
             `}
           />
         </Show>
         <Label>{t('webui/launcher/config/commit')}</Label>
         <AutoComplete
-          suggestions={() => ['master', ...gitLog().map((v) => v.hash.slice(0, 6))]}
+          suggestions={(hash: string) => {
+            const i = gitLog().findIndex((v) => v.hash.startsWith(hash))
+            return [
+              'master',
+              ...gitLog()
+                .slice(i === -1 ? 0 : i, 50)
+                .map((v) => v.hash.slice(0, 6) + ` (${dayjs(v.date).format('YYYY MM/DD HH:mm')})`),
+            ]
+          }}
           value={config['webui/git/commit']}
           onInput={(value) => setConfig('webui/git/commit', value)}
           onChange={(value) => setConfig('webui/git/commit', value)}
           limit={50}
         />
-
+        <br />
         <Button task={() => ipc.webui.invoke('git/pull')}>
           {t('webui/launcher/config/update')}
         </Button>
       </div>
       <div
         class={css`
+          padding: 0.5rem 1rem;
           grid-row: 2/3;
-          padding: 0 1rem;
         `}
       >
+        <div
+          class={css`
+            font-family: 'Roboto Mono';
+
+            span:first-child {
+              font-weight: bold;
+            }
+
+            span:last-child {
+              color: ${(running() ? Color('aqua') : Color('red')).lighten(0.5)};
+            }
+          `}
+        >
+          <span>Status</span>: <span>{running() ? 'Running' : 'Stopped'}</span>
+        </div>
         <HStack>
           <StyledIconButton
             onClick={() => {
               setRunning(true)
               setLogs([])
-              ipc.webui.invoke('webui/launch', createArgs(), '')
+              ipc.webui.invoke('webui/launch', createArgs(), config['webui/git/commit'].slice(0, 6))
               ipc.webui.once('webui/close', () => {
                 setUrl('about:blank')
                 setRunning(false)

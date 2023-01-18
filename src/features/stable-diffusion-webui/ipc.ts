@@ -14,6 +14,10 @@ export interface ClientToServerEvents {
     'env/installed': () => boolean
     'git/log': () => LogResult<DefaultLogFields>
     'git/pull': () => PullResult
+    'config/get': () => string
+    'config/save': (str: string) => void
+    'ui-config/get': () => string
+    'ui-config/save': (str: string) => void
     'webui/running': () => boolean
     'webui/logs': () => string[]
     'webui/launch': (args: string, commit: string) => number

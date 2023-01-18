@@ -28,6 +28,7 @@ importers:
       eslint-plugin-solid: ^0.9.3
       eslint-plugin-unused-imports: ^2.0.0
       fast-glob: ^3.2.12
+      monaco-editor: ^0.34.1
       node-fetch: ^3.3.0
       postcss-syntax: ^0.36.2
       prettier: ^2.8.3
@@ -50,6 +51,7 @@ importers:
       dayjs: 1.11.7
       decorock: 0.1.8_solid-js@1.6.9
       fast-glob: 3.2.12
+      monaco-editor: 0.34.1
       node-fetch: 3.3.0
       simple-git: 3.16.0
       solid-headless: 0.13.0_solid-js@1.6.9
@@ -3927,6 +3929,10 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
     dev: true
+
+  /monaco-editor/0.34.1:
+    resolution: {integrity: sha512-FKc80TyiMaruhJKKPz5SpJPIjL+dflGvz4CpuThaPMc94AyN7SeC9HQ8hrvaxX7EyHdJcUY5i4D0gNyJj1vSZQ==}
+    dev: false
 
   /ms/2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}

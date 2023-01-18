@@ -1,9 +1,11 @@
 import { css, styled } from 'decorock'
-import { Accessor, createContext, createSignal, For, onMount, Setter } from 'solid-js'
+import { Accessor, createContext, createSignal, For, onMount, Setter, Show } from 'solid-js'
 
 import { Config } from './config'
 import { Launcher } from './launcher'
+import { Settings } from './settings'
 import { UI } from './ui'
+import { UIConfig } from './ui-config'
 
 import { ipc } from '~/web/lib/ipc'
 
@@ -58,7 +60,9 @@ export const WebUIContext = createContext({} as Context)
 const TABS = {
   Launcher,
   UI,
+  Settings,
   Config,
+  UIConfig,
 }
 
 export const WEBUI = () => {
@@ -106,16 +110,31 @@ export const WEBUI = () => {
           {(tab) => {
             const Comp = TABS[tab as keyof typeof TABS]
             return (
-              <div
-                class={css`
-                  position: ${current() === tab ? 'static' : 'fixed'};
-                  height: 100%;
-                  opacity: ${current() === tab ? '1' : '0'};
-                  pointer-events: ${current() === tab ? 'auto' : 'none'};
-                `}
+              <Show
+                when={tab === 'UI'}
+                fallback={
+                  <Show when={tab === current()}>
+                    <div
+                      class={css`
+                        height: 100%;
+                      `}
+                    >
+                      <Comp />
+                    </div>
+                  </Show>
+                }
               >
-                <Comp />
-              </div>
+                <div
+                  class={css`
+                    position: ${current() === tab ? 'static' : 'fixed'};
+                    height: 100%;
+                    opacity: ${current() === tab ? '1' : '0'};
+                    pointer-events: ${current() === tab ? 'auto' : 'none'};
+                  `}
+                >
+                  <Comp />
+                </div>
+              </Show>
             )
           }}
         </For>

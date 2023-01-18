@@ -24,9 +24,9 @@ const Paths: Component = () => {
           <div
             class={css`
               display: grid;
+              align-items: center;
               grid-template-columns: 1fr 50px;
               grid-template-rows: 100%;
-              align-items: center;
             `}
           >
             <Input

@@ -33,7 +33,7 @@ export const en: LangConfig = {
     'webui/launcher/uninstall/button': 'Uninstall WebUI',
 
     'webui/launcher/config/commit': 'Commit hash (or Branch name)',
-    'webui/launcher/config/update': 'WebUIを更新',
+    'webui/launcher/config/update': 'Update WebUI',
 
     'webui/config/ckpt-dir': 'Checkpoints directory',
     'webui/config/vae-path': 'VAE directory',

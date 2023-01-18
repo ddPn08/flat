@@ -60,6 +60,7 @@
     "dayjs": "^1.11.7",
     "decorock": "^0.1.8",
     "fast-glob": "^3.2.12",
+    "monaco-editor": "^0.34.1",
     "node-fetch": "^3.3.0",
     "simple-git": "^3.16.0",
     "solid-headless": "^0.13.0",

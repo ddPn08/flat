@@ -39,8 +39,14 @@ class StableDiffusionWebUI {
         this.ipc.handle('env/installed', this.isInstalled.bind(this))
         this.ipc.handle('env/uninstall', this.uninstallEnv.bind(this))
 
+        this.ipc.handle('config/get', this.getConfig.bind(this, 'config.json'))
+        this.ipc.handle('config/save', (_, str) => this.saveConfig('config.json', str))
+
+        this.ipc.handle('ui-config/get', this.getConfig.bind(this, 'ui-config.json'))
+        this.ipc.handle('ui-config/save', (_, str) => this.saveConfig('ui-config.json', str))
+
         this.ipc.handle('webui/running', () => this.ps !== null)
-        this.ipc.handle('webui/launch', (_, args) => this.launch(args))
+        this.ipc.handle('webui/launch', (_, args, commit) => this.launch(args, commit))
         this.ipc.handle('webui/stop', this.stop.bind(this))
         this.ipc.handle('webui/logs', () => this.logs)
         this.ipc.handle('webui/port', () => this.port)
@@ -50,8 +56,18 @@ class StableDiffusionWebUI {
         this.ipc.handle('git/pull', this.pull.bind(this))
     }
 
-    public git() {
-        return simpleGit(path.join(this.dir, 'repository'))
+    public getConfig(filename: string) {
+        const filepath = path.join(this.dir, 'repository', filename)
+        if (fs.existsSync(filepath)) {
+            return fs.promises.readFile(filepath, 'utf-8')
+        } else {
+            return ''
+        }
+    }
+
+    public saveConfig(filename: string, str: string) {
+        const filepath = path.join(this.dir, 'repository', filename)
+        return fs.promises.writeFile(filepath, str)
     }
 
     public isInstalled() {
@@ -101,12 +117,17 @@ class StableDiffusionWebUI {
                 { cwd: repoPath },
             ),
         )
+        this.ipc.emit('log', 'Installation finished🎉')
     }
 
     public async launch(args: string, commit = 'master') {
         if (this.ps) throw new Error('already running.')
         const git = this.git()
-        await git.checkout(commit)
+        try {
+            await git.checkout(commit)
+        } catch (_) {
+            this.ipc.emit('log', 'Incorrect commit hash.')
+        }
         this.port = await getFreePort()
         args += ` --port ${this.port}`
         this.ps = conda.run(`python -u launch.py`, this.condaEnv, {
@@ -138,9 +159,13 @@ class StableDiffusionWebUI {
         this.ps = null
     }
 
+    public git() {
+        return simpleGit(path.join(this.dir, 'repository'))
+    }
+
     public async pull() {
         const git = this.git()
-        const log = await git.fetch().pull('master')
+        const log = await git.fetch().pull('origin', 'master')
         this.ipc.emit('log', 'Updated WebUI.')
         return log
     }

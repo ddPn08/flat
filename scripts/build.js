@@ -15,6 +15,11 @@ const __dirname = fileURLToPath(path.dirname(import.meta.url))
 const __dev = process.env['NODE_ENV'] === 'development'
 const cwd = path.dirname(__dirname)
 
+const front = () =>
+    vite.build({
+        configFile: './vite.config.ts',
+    })
+
 const bundle = async () => {
     const outdir = path.join(cwd, 'dist')
     if (fs.existsSync(outdir)) await fs.promises.rm(outdir, { recursive: true })
@@ -33,9 +38,6 @@ const bundle = async () => {
         format: 'cjs',
         platform: 'node',
     }
-    await vite.build({
-        configFile: './vite.config.ts',
-    })
     await esbuild.build({
         ...config,
         entryPoints: {
@@ -99,10 +101,10 @@ const build = async () => {
 const bundleOnly = process.argv.includes('--bundle-only')
 const run = process.argv.includes('--run')
 
-await bundle()
 if (run) {
     const port = 3000
 
+    await bundle()
     const server = await vite.createServer({
         configFile: './vite.config.ts',
     })
@@ -121,6 +123,8 @@ if (run) {
         process.exit()
     })
 } else {
+    await front()
+    await bundle()
     if (bundleOnly) process.exit()
     await build()
 }

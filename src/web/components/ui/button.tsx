@@ -14,6 +14,7 @@ import { CircleSpinner } from './spinner'
 const StyledButton = styled.button<{ _padding: boolean }>`
   position: relative;
   ${(p) => (p._padding ? '' : 'padding: 0.75rem 1.5rem;')}
+
   border: none;
   border-radius: 1rem;
   margin: 0.5rem;

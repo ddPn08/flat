@@ -31,18 +31,18 @@ const Image: Component<ImageData> = (props) => {
           width: 300px;
           height: 400px;
           background-color: ${theme.colors.primary.fade(0.95)};
-          user-select: none;
           cursor: pointer;
+          user-select: none;
         `}
         onClick={() => setIsOpen(true)}
       >
         <img
           class={css`
-            height: auto;
-            width: 100%;
-            object-fit: cover;
             overflow: hidden;
+            width: 100%;
+            height: auto;
             aspect-ratio: 1/1;
+            object-fit: cover;
           `}
           src={props.filepath}
           alt=""
@@ -51,13 +51,15 @@ const Image: Component<ImageData> = (props) => {
           class={css`
             padding: 0.25rem;
             font-family: 'Roboto Mono';
+
             p {
+              margin-bottom: 0.5rem;
               font-size: 0.8rem;
-              margin-bottom: 0.5rem;
             }
+
             div {
-              font-size: 0.9rem;
               margin-bottom: 0.5rem;
+              font-size: 0.9rem;
             }
           `}
         >
@@ -80,10 +82,11 @@ const Image: Component<ImageData> = (props) => {
           <div
             class={css`
               display: grid;
-              grid-template-columns: 1fr 1fr;
-              grid-template-rows: 100%;
               height: 70vh;
               font-family: 'Roboto Mono';
+              grid-template-columns: 1fr 1fr;
+              grid-template-rows: 100%;
+
               img {
                 display: inline-block;
                 width: 100%;
@@ -98,12 +101,14 @@ const Image: Component<ImageData> = (props) => {
             <div
               class={css`
                 div {
-                  font-size: 1rem;
                   margin-bottom: 1rem;
+                  font-size: 1rem;
                 }
+
                 span {
                   font-weight: bold;
                 }
+
                 height: 100%;
                 overflow-y: auto;
               `}
@@ -154,13 +159,13 @@ export const Images = () => {
   return (
     <div
       class={css`
-        height: calc(100vh - 50px);
-        overflow-y: auto;
         display: flex;
-        align-items: center;
+        height: calc(100vh - 50px);
         flex-wrap: wrap;
+        align-items: center;
         padding: 1rem;
         gap: 0.5rem;
+        overflow-y: auto;
       `}
       onScroll={(e) => {
         if (

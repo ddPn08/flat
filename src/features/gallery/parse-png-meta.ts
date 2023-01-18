@@ -1,4 +1,4 @@
-import type { ImageInformation } from "./types"
+import type { ImageInformation } from './types'
 
 const parseAutomatic1111Meta = (parameters: string) => {
     const result: ImageInformation = {}
