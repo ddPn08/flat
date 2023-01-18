@@ -15,6 +15,9 @@ export const en: LangConfig = {
     'system/git-install-error/description':
         'Please restart the app and try again. \nIf the problem persists, please contact the developer.',
 
+    'galley/config/paths': 'Directory to search for images',
+    'galley/config/apply': 'Apply',
+
     'webui/launcher/install-success/title': 'Installation was successful.',
     'webui/launcher/install-success/description': 'WebUI can be started.',
     'webui/launcher/launched/title': 'WebUI started.',

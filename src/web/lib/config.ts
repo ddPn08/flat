@@ -7,6 +7,7 @@ import { ipc } from './ipc'
 export type Config = {
     'system/lang': 'ja' | 'en'
     'system/theme': 'light' | 'dark'
+    'galley/paths': string[]
     'webui/git/commit': string
     'webui/args/ckpt-dir': string
     'webui/args/vae-path': string
@@ -19,6 +20,7 @@ export type Config = {
 const defaultConfig: Config = {
     'system/lang': 'ja',
     'system/theme': 'dark',
+    'galley/paths': [],
     'webui/git/commit': 'master',
     'webui/args/ckpt-dir': bpath.join(
         await ipc.webui.invoke('webui/data-dir'),
@@ -69,5 +71,6 @@ export const [config, setConfig] = createStore<Config>(saved)
 
 createEffect(() => {
     const raw = JSON.stringify(config)
+    ipc.system.invoke('config/save', JSON.parse(raw))
     localStorage.setItem('config', raw)
 })

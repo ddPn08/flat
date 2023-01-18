@@ -11,6 +11,9 @@ const LangKeys = [
     'system/git-install-error/title',
     'system/git-install-error/description',
 
+    'galley/config/paths',
+    'galley/config/apply',
+
     'webui/launcher/install-success/title',
     'webui/launcher/install-success/description',
     'webui/launcher/launched/title',

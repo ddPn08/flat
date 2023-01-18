@@ -9,6 +9,7 @@ import { ToastProvider } from './components/ui/toast'
 import { Updater } from './components/updater'
 import { classnames } from './lib/classnames'
 import { config } from './lib/config'
+import { GALLERY } from './pages/galley'
 import { SETTINGS } from './pages/settings'
 import { WEBUI } from './pages/webui'
 import { ThemeProvider } from './styles'
@@ -35,6 +36,7 @@ export const App = () => {
 }
 
 const PAGES = {
+  GALLERY,
   WEBUI,
   SETTINGS,
 }

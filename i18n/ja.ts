@@ -15,6 +15,9 @@ export const ja: LangConfig = {
     'system/git-install-error/description':
         'アプリを再起動して、再度試してください。\n解決しない場合は開発者にお問い合わせください。',
 
+    'galley/config/paths': '画像を検索するディレクトリ',
+    'galley/config/apply': '適応',
+
     'webui/launcher/install-success/title': 'インストールに成功しました。',
     'webui/launcher/install-success/description': 'WebUIを起動できます。',
     'webui/launcher/launched/title': 'WebUIが起動しました。',
@@ -28,8 +31,8 @@ export const ja: LangConfig = {
     'webui/launcher/uninstall-env/description': '出力画像等の、WebUIのファイルは削除されません。',
     'webui/launcher/uninstall/button': 'Uninstall WebUI',
 
-    'webui/launcher/config/commit': "Commit hash (またはブランチ名)",
-    "webui/launcher/config/update": "WebUIを更新",
+    'webui/launcher/config/commit': 'Commit hash (またはブランチ名)',
+    'webui/launcher/config/update': 'WebUIを更新',
 
     'webui/config/ckpt-dir': 'モデルディレクトリ',
     'webui/config/vae-path': 'VAEディレクトリ',

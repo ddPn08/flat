@@ -11,9 +11,9 @@ import {
 
 import { CircleSpinner } from './spinner'
 
-const StyledButton = styled.button`
+const StyledButton = styled.button<{ _padding: boolean }>`
   position: relative;
-  padding: 0.75rem 1.5rem;
+  ${(p) => (p._padding ? '' : 'padding: 0.75rem 1.5rem;')}
   border: none;
   border-radius: 1rem;
   margin: 0.5rem;
@@ -57,7 +57,7 @@ const Status = styled.div`
 `
 
 export const Button: Component<
-  ComponentProps<typeof StyledButton> & {
+  ComponentProps<'button'> & {
     task?: (
       e: MouseEvent & {
         currentTarget: HTMLButtonElement
@@ -66,6 +66,7 @@ export const Button: Component<
     ) => any
     loading?: boolean
     status?: string | undefined
+    _padding?: boolean | undefined
   }
 > = (props) => {
   const [local, others] = splitProps(props, ['children', 'loading', 'status', 'onClick', 'task'])
@@ -74,12 +75,13 @@ export const Button: Component<
   return (
     <StyledButton
       {...others}
+      _padding={!!props._padding}
       onClick={(e) => {
         if (loading()) return e.preventDefault()
         if (typeof local.task === 'function') {
           setRunning(true)
           const t = local.task(e)
-          if (t.then) t.then(() => setRunning(false))
+          if (typeof t !== 'function' && t.then) t.then(() => setRunning(false))
         }
         if (typeof local.onClick === 'function') local.onClick(e)
       }}
