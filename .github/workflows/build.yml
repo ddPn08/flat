@@ -1,0 +1,19 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build the application
+        uses: ./.github/actions/build

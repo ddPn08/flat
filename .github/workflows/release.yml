@@ -1,0 +1,35 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build the application
+        uses: ./.github/actions/build
+
+      - name: Get current tag
+        uses: ./.github/actions/tag
+        id: get_tag
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            product/flat-${{ steps.get_tag.outputs.tag }}.zip
+            product/flat-${{ steps.get_tag.outputs.tag }}.exe
+            product/app.zip
+            product/meta.yaml
+          body: '# Flat ${{ steps.get_tag.outputs.tag }}'

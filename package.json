@@ -1,0 +1,67 @@
+{
+  "name": "flat",
+  "description": "All-in-one image generation AI (to be...)",
+  "type": "module",
+  "version": "0.1.0",
+  "author": {
+    "name": "ddpn08",
+    "url": "https://me.ddpn.world"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ddPn08/flat"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "main": "dist/index.cjs",
+  "scripts": {
+    "build": "node ./scripts/build.js",
+    "dev": "cross-env NODE_ENV=\"development\" pnpm build --bundle-only --run",
+    "eslint": "eslint src/**/*.{ts,tsx}",
+    "stylelint": "stylelint src/**/*.{ts,tsx}",
+    "prettier": "prettier src/**/*.{ts,tsx}",
+    "format-all": "pnpm eslint --fix & pnpm stylelint --fix & pnpm prettier --write"
+  },
+  "devDependencies": {
+    "@iconify-json/material-symbols": "^1.1.26",
+    "@stylelint/postcss-css-in-js": "^0.38.0",
+    "@types/adm-zip": "^0.5.0",
+    "@types/color": "^3.0.3",
+    "@types/node": "^18.11.18",
+    "@typescript-eslint/eslint-plugin": "^5.30.7",
+    "@typescript-eslint/parser": "^5.30.7",
+    "cross-env": "^7.0.3",
+    "electron": "^22.0.2",
+    "electron-builder": "^23.6.0",
+    "esbuild": "^0.17.0",
+    "esbuild-register": "^3.4.2",
+    "eslint": "^8.32.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-import-resolver-typescript": "^3.5.3",
+    "eslint-plugin-import": "^2.27.4",
+    "eslint-plugin-solid": "^0.9.3",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "postcss-syntax": "^0.36.2",
+    "prettier": "^2.8.3",
+    "stylelint": "^14.16.1",
+    "stylelint-config-idiomatic-order": "^9.0.0",
+    "stylelint-config-prettier": "^9.0.4",
+    "stylelint-config-standard": "^29.0.0",
+    "typescript": "^4.9.4",
+    "unplugin-icons": "^0.15.1",
+    "vite": "^4.0.4",
+    "vite-plugin-solid": "^2.5.0"
+  },
+  "dependencies": {
+    "@solid-primitives/i18n": "^1.1.2",
+    "adm-zip": "^0.5.10",
+    "color": "^4.2.3",
+    "decorock": "^0.1.8",
+    "node-fetch": "^3.3.0",
+    "simple-git": "^3.16.0",
+    "solid-headless": "^0.13.0",
+    "solid-js": "^1.6.9",
+    "yaml": "^2.2.1"
+  }
+}

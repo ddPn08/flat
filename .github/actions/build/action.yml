@@ -1,0 +1,21 @@
+name: Build
+description: Build the application
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '18'
+
+    - name: Setup pnpm
+      shell: bash
+      run: npm i -g pnpm
+
+    - name: PNPM install
+      shell: bash
+      run: pnpm i
+
+    - name: Build application
+      shell: bash
+      run: pnpm build

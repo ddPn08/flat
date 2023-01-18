@@ -1,0 +1,8 @@
+name: Tag
+description: Get current tag
+outputs:
+  tag:
+    description: Current tag
+runs:
+  using: 'node16'
+  main: 'index.js'
