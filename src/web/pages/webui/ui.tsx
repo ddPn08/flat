@@ -45,6 +45,7 @@ export const UI: Component = () => {
       })
       setInterval(() => {
         if (!promptData.fin && !promptData.cancel) return
+        if (promptData.cancel) reject()
         const value = promptData.value.toString()
         setPromptData({
           open: false,
@@ -53,8 +54,7 @@ export const UI: Component = () => {
           fin: false,
           cancel: false,
         })
-        if (promptData.cancel) reject()
-        else resolve(value)
+        resolve(value)
       }, 100)
     })
   }
@@ -73,7 +73,7 @@ export const UI: Component = () => {
           try {
             const name = await prompt(e.args[0])
             webview.send('ask_for_style_name', name)
-          } catch (error) {
+          } catch (_) {
             webview.send('ask_for_style_name', null)
           }
           break
