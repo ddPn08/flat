@@ -2,13 +2,6 @@
 <div align="center"><img height="256px" src="./icons/icon-512x512.png" /></div>
 <p align="center">All-in-one image generation AI (to be...)</p>
 <br>
-<div align="center"><a href="https://github.com/ddPn08/flat/releases/latest"><img width="50%" src="./assets/download.svg" /></a></div>
-
-> **Warning**
->
-> 🚧 This is a beta release. Unexpected errors may occur.
->
-> If you get an error, please let the developer know.
 
 ---
 
@@ -21,6 +14,17 @@
 </div>
 
 ---
+
+> **Warning**
+>
+> 🚧 This is a beta release. Unexpected errors may occur.
+>
+> If you get an error, please let the developer know.
+
+# How to install
+👇Click here for installation instructions.
+
+[installation.md](/docs/installation.md)
 
 # Features
 

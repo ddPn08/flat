@@ -2,7 +2,6 @@
 <div align="center"><img height="256px" src="./icons/icon-512x512.png" /></div>
 <p align="center">AI画像生成のオールインワン (になるはず...)</p>
 <br>
-<div align="center"><a href="https://github.com/ddPn08/flat/releases/latest"><img width="50%" src="./assets/download.svg" /></a></div>
 
 > **Warning**
 >
@@ -22,6 +21,14 @@
 
 ---
 
+
+# インストール方法
+👇インストール方法はこちらをご覧ください。
+
+[installation-ja.md](/docs/installation.md)
+
+<br >
+
 # 機能
 
 ## AUTOMATIC1111 Stable Diffusion Webui
@@ -35,6 +42,8 @@ Python のインストールや Git の操作は必要ありません。
 ![](./assets/screenshots/webui-01.png)
 ![](./assets/screenshots/webui-02.png)
 ![](./assets/screenshots/webui-03.png)
+
+<br >
 
 ## Image galley
 
