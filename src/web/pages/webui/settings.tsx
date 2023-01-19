@@ -80,10 +80,10 @@ export const Settings: Component = () => {
       />
       <br />
 
-      <Label>{t('webui/config/vae-path')}</Label>
+      <Label>{t('webui/config/vae-dir')}</Label>
       <Input
-        value={config['webui/args/vae-path']}
-        onInput={(e) => setConfig('webui/args/vae-path', e.currentTarget.value)}
+        value={config['webui/args/vae-dir']}
+        onInput={(e) => setConfig('webui/args/vae-dir', e.currentTarget.value)}
       />
       <br />
 

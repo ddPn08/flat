@@ -10,7 +10,7 @@ export type Config = {
     'galley/paths': string[]
     'webui/git/commit': string
     'webui/args/ckpt-dir': string
-    'webui/args/vae-path': string
+    'webui/args/vae-dir': string
     'webui/args/embeddings-dir': string
     'webui/args/hypernetwork-dir': string
     'webui/args/xformers': boolean
@@ -28,7 +28,7 @@ const defaultConfig: Config = {
         'models',
         'Stable-diffusion',
     ),
-    'webui/args/vae-path': bpath.join(
+    'webui/args/vae-dir': bpath.join(
         await ipc.webui.invoke('webui/data-dir'),
         'repository',
         'models',
@@ -50,12 +50,16 @@ const defaultConfig: Config = {
 }
 
 const merge = (obj: any) => {
+    const c: Record<string, any> = {}
     for (const key of Object.keys(defaultConfig)) {
         const val = key in obj ? obj[key] : null
-        if (!val) obj[key] = defaultConfig[key as keyof typeof defaultConfig]
-        else if (typeof val === 'object') obj[key] = merge(val)
+        const defaultVal = defaultConfig[key as keyof typeof defaultConfig]
+        if (!val) c[key] = defaultVal
+        else if (!Array.isArray(val) && Array.isArray(defaultVal)) c[key] = defaultVal
+        else if (typeof val === 'object' && !Array.isArray(val)) c[key] = merge(val)
+        else c[key] = val
     }
-    return obj
+    return c as Config
 }
 
 const raw = localStorage.getItem('config') || ''

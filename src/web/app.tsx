@@ -9,9 +9,9 @@ import { ToastProvider } from './components/ui/toast'
 import { Updater } from './components/updater'
 import { classnames } from './lib/classnames'
 import { config } from './lib/config'
-import { GALLERY } from './pages/galley'
-import { SETTINGS } from './pages/settings'
-import { WEBUI } from './pages/webui'
+import { Galley } from './pages/galley'
+import { General } from './pages/general'
+import { WebUI } from './pages/webui'
 import { ThemeProvider } from './styles'
 
 import { dict } from '~i18n/index'
@@ -36,14 +36,14 @@ export const App = () => {
 }
 
 const PAGES = {
-  GALLERY,
-  WEBUI,
-  SETTINGS,
+  General,
+  Galley,
+  WebUI,
 }
 
 const Index = () => {
   const theme = useTheme()
-  const [current, setCurrent] = createSignal('WEBUI')
+  const [current, setCurrent] = createSignal('General')
   const [open, setOpen] = createSignal(true)
   return (
     <>

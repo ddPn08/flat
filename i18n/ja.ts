@@ -15,8 +15,18 @@ export const ja: LangConfig = {
     'system/git-install-error/description':
         'アプリを再起動して、再度試してください。\n解決しない場合は開発者にお問い合わせください。',
 
+    'general/app/description':
+        'flatは、画像生成AIのオールインワンツールキット(になる予定)です。\nAUTOMATIC1111 StableDiffusionWebUIや、生成画像を一覧で表示するギャラリー機能等が備わっています。',
+    "general/app/repository": "Githubのリポジトリ",
+    'general/app/report': "バグを報告",
+
     'galley/config/paths': '画像を検索するディレクトリ',
     'galley/config/apply': '適応',
+    'galley/open-folder/button': 'フォルダを開く',
+    'galley/search/title': '検索',
+    'galley/search/prompt': 'プロンプト',
+    'galley/search/model': 'モデル名',
+    'galley/search/button': '検索',
 
     'webui/launcher/install-success/title': 'インストールに成功しました。',
     'webui/launcher/install-success/description': 'WebUIを起動できます。',
@@ -35,7 +45,7 @@ export const ja: LangConfig = {
     'webui/launcher/config/update': 'WebUIを更新',
 
     'webui/config/ckpt-dir': 'モデルディレクトリ',
-    'webui/config/vae-path': 'VAEディレクトリ',
+    'webui/config/vae-dir': 'VAEディレクトリ',
     'webui/config/hypernetwork-dir': 'Hypernetworksディレクトリ',
     'webui/config/embeddings-dir': 'Embeddingsディレクトリ',
     'webui/config/xformers': 'xformersを有効にする',

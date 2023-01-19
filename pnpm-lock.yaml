@@ -42,6 +42,7 @@ importers:
       typescript: ^4.9.4
       unplugin-icons: ^0.15.1
       vite: ^4.0.4
+      vite-plugin-monaco-editor: ^1.1.0
       vite-plugin-solid: ^2.5.0
       yaml: ^2.2.1
     dependencies:
@@ -85,6 +86,7 @@ importers:
       typescript: 4.9.4
       unplugin-icons: 0.15.1
       vite: 4.0.4_@types+node@18.11.18
+      vite-plugin-monaco-editor: 1.1.0_monaco-editor@0.34.1
       vite-plugin-solid: 2.5.0_solid-js@1.6.9+vite@4.0.4
 
   .github/actions/tag:
@@ -3932,7 +3934,6 @@ packages:
 
   /monaco-editor/0.34.1:
     resolution: {integrity: sha512-FKc80TyiMaruhJKKPz5SpJPIjL+dflGvz4CpuThaPMc94AyN7SeC9HQ8hrvaxX7EyHdJcUY5i4D0gNyJj1vSZQ==}
-    dev: false
 
   /ms/2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
@@ -5146,6 +5147,14 @@ packages:
       extsprintf: 1.4.1
     dev: true
     optional: true
+
+  /vite-plugin-monaco-editor/1.1.0_monaco-editor@0.34.1:
+    resolution: {integrity: sha512-IvtUqZotrRoVqwT0PBBDIZPNraya3BxN/bfcNfnxZ5rkJiGcNtO5eAOWWSgT7zullIAEqQwxMU83yL9J5k7gww==}
+    peerDependencies:
+      monaco-editor: '>=0.33.0'
+    dependencies:
+      monaco-editor: 0.34.1
+    dev: true
 
   /vite-plugin-solid/2.5.0_solid-js@1.6.9+vite@4.0.4:
     resolution: {integrity: sha512-VneGd3RyFJvwaiffsqgymeMaofn0IzQLPwDzafTV2f1agoWeeJlk5VrI5WqT9BTtLe69vNNbCJWqLhHr9fOdDw==}

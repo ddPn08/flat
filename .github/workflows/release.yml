@@ -18,6 +18,10 @@ jobs:
       - name: Build the application
         uses: ./.github/actions/build
 
+      - name: Setup actions
+        run: pnpm i
+        working-directory: ./.github/actions/tag
+
       - name: Get current tag
         uses: ./.github/actions/tag
         id: get_tag
@@ -32,4 +36,8 @@ jobs:
             product/flat-${{ steps.get_tag.outputs.tag }}.exe
             product/app.zip
             product/meta.yaml
-          body: '# Flat ${{ steps.get_tag.outputs.tag }}'
+          body: |-
+            # Flat ${{ steps.get_tag.outputs.tag }}
+            ## Download
+            - [Windows x64 Potable](https://github.com/ddPn08/flat/releases/download/${{ steps.get_tag.outputs.tag }}/${{ steps.get_tag.outputs.tag }}.exe)
+            - [Windows x64 Installer](https://github.com/ddPn08/flat/releases/download/${{ steps.get_tag.outputs.tag }}/${{ steps.get_tag.outputs.tag }}.zip)

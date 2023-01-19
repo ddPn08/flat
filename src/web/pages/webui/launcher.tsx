@@ -38,7 +38,6 @@ export const createArgs = () => {
   for (const [key, val] of Object.entries(config)) {
     if (!key.startsWith('webui/args')) continue
     const arg = key.split('/').slice(-1)[0]
-    if (arg === 'vae-path') continue
     if (arg === 'custom') result += val
     else if (typeof val === 'boolean' && val) result += ` --${arg}`
     else if (typeof val === 'string') result += ` --${arg} "${val}"`.replace(/\\/g, '\\\\')
@@ -54,7 +53,7 @@ export const Launcher: Component = () => {
   const { setUrl, onLaunch } = useContext(WebUIContext)
   const [gitLog, setGitLog] = createSignal<LogResult<DefaultLogFields>['all']>([])
   const [logs, setLogs] = createSignal<string[]>([])
-  const [installed, setInstalled] = createSignal(false)
+  const [installed, setInstalled] = createSignal(true)
   const [installing, setInstalling] = createSignal(false)
   const [running, setRunning] = createSignal(false)
 

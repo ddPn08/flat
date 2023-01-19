@@ -6,6 +6,7 @@ import { Images } from './images'
 
 const Container = styled.div`
   display: grid;
+  overflow: hidden;
   height: 100vh;
   margin: 0;
   grid-template-columns: 100%;
@@ -49,7 +50,7 @@ const TABS = {
   Config,
 }
 
-export const GALLERY = () => {
+export const Galley = () => {
   const [current, setCurrent] = createSignal('Images')
 
   return (

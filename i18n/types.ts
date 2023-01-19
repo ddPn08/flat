@@ -11,8 +11,17 @@ const LangKeys = [
     'system/git-install-error/title',
     'system/git-install-error/description',
 
+    'general/app/description',
+    'general/app/repository',
+    'general/app/report',
+
     'galley/config/paths',
     'galley/config/apply',
+    'galley/open-folder/button',
+    'galley/search/title',
+    'galley/search/prompt',
+    'galley/search/model',
+    'galley/search/button',
 
     'webui/launcher/install-success/title',
     'webui/launcher/install-success/description',
@@ -30,7 +39,7 @@ const LangKeys = [
     'webui/launcher/config/update',
 
     'webui/config/ckpt-dir',
-    'webui/config/vae-path',
+    'webui/config/vae-dir',
     'webui/config/embeddings-dir',
     'webui/config/hypernetwork-dir',
     'webui/config/xformers',

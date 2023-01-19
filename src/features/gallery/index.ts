@@ -32,7 +32,7 @@ class Galley {
         if (!fs.existsSync(this.dbFilePath)) fs.writeFileSync(this.dbFilePath, '{}')
         const config = getConfig()
         if (config) {
-            this.paths = config['galley/paths']
+            this.paths = Array.isArray(config['galley/paths']) ? config['galley/paths'] : []
         }
         this.ipc.handle('pathes/update', async (_, paths) => {
             this.paths = paths
@@ -96,9 +96,11 @@ class Galley {
         const limit = search.limit || 100
         const since = search.since || 0
 
-        for (const v of this.db
-            .sort((a, b) => (a.created_at < b.created_at ? -1 : 1))
-            .slice(since, since + limit)) {
+        const files = [...this.db.sort((a, b) => (a.created_at < b.created_at ? -1 : 1))]
+
+        if (typeof search.latest !== 'boolean' || search.latest) files.reverse()
+
+        for (const v of files.slice(since, since + limit)) {
             if (result.length >= limit) break
             if (search.filename && !path.basename(v.filepath).includes(search.filename)) continue
             if (search.info) {
@@ -106,7 +108,7 @@ class Galley {
                 for (const [ik, iv] of Object.entries(search.info)) {
                     if (
                         Object.keys(v.info).includes(ik) &&
-                        !`${iv}`.includes(`${v.info[ik as keyof typeof v.info]}`)
+                        !`${v.info[ik as keyof typeof v.info]}`.includes(`${iv}`)
                     )
                         c = true
                 }

@@ -1,191 +1,161 @@
-import dayjs from 'dayjs'
-import { css, useTheme } from 'decorock'
-import { Component, createSignal, For, onMount, Show } from 'solid-js'
+import { useI18n } from '@solid-primitives/i18n'
+import { css, styled } from 'decorock'
+import { createSignal, For, onMount, Show } from 'solid-js'
+import { createStore } from 'solid-js/store'
 
-import type { ImageData } from '~/features/gallery/types'
-import { Modal } from '~/web/components/modal'
+import { Image } from './image'
+
+import type { ImageData, ImageSearchOptions } from '~/features/gallery/types'
 import { IconButton } from '~/web/components/ui/icon-button'
+import { Input } from '~/web/components/ui/input'
 import { RectSpinner } from '~/web/components/ui/spinner'
+import { HStack } from '~/web/components/ui/stack'
 import { ipc } from '~/web/lib/ipc'
-import IconClose from '~icons/material-symbols/close'
+import { serialize } from '~/web/lib/store-serialize'
+import IconSearch from '~icons/material-symbols/search'
 
-const Info: Component<{ label: string; value?: string | number | undefined }> = (props) => (
-  <Show when={props.value} keyed>
-    {(v) => (
-      <>
-        <div>
-          <span>{props.label}</span>: {v}
-        </div>
-      </>
-    )}
-  </Show>
-)
+const RangeInput = styled.input`
+  width: 20%;
+  height: 5px;
+  border-radius: 6px;
+  appearance: none;
+  background-color: #fff;
 
-const Image: Component<ImageData> = (props) => {
-  const theme = useTheme()
-  const [isOpen, setIsOpen] = createSignal(false)
-  return (
-    <>
-      <div
-        class={css`
-          width: 300px;
-          height: 400px;
-          background-color: ${theme.colors.primary.fade(0.95)};
-          cursor: pointer;
-          user-select: none;
-        `}
-        onClick={() => setIsOpen(true)}
-      >
-        <img
-          class={css`
-            overflow: hidden;
-            width: 100%;
-            height: auto;
-            aspect-ratio: 1/1;
-            object-fit: cover;
-          `}
-          src={props.filepath}
-          alt=""
-        />
-        <div
-          class={css`
-            padding: 0.25rem;
-            font-family: 'Roboto Mono';
+  &:focus,
+  &:active {
+    outline: none;
+  }
 
-            p {
-              margin-bottom: 0.5rem;
-              font-size: 0.8rem;
-            }
-
-            div {
-              margin-bottom: 0.5rem;
-              font-size: 0.9rem;
-            }
-          `}
-        >
-          <p>{props.info.prompt?.slice(0, 100)}...</p>
-          <Show when={props.info.model} keyed>
-            {(model) => <div>Model: {model}</div>}
-          </Show>
-        </div>
-      </div>
-      <div
-        class={css`
-          position: fixed;
-          z-index: 100;
-        `}
-      >
-        <Modal isOpen={isOpen()} onClose={() => setIsOpen(false)}>
-          <IconButton onClick={() => setIsOpen(false)}>
-            <IconClose />
-          </IconButton>
-          <div
-            class={css`
-              display: grid;
-              height: 70vh;
-              font-family: 'Roboto Mono';
-              grid-template-columns: 1fr 1fr;
-              grid-template-rows: 100%;
-
-              img {
-                display: inline-block;
-                width: 100%;
-                height: 100%;
-                object-fit: contain;
-              }
-            `}
-          >
-            <div>
-              <img src={props.filepath} alt="" />
-            </div>
-            <div
-              class={css`
-                div {
-                  margin-bottom: 1rem;
-                  font-size: 1rem;
-                }
-
-                span {
-                  font-weight: bold;
-                }
-
-                height: 100%;
-                overflow-y: auto;
-              `}
-            >
-              <Info label="Prompt" value={props.info.prompt} />
-              <Info label="Negative Prompt" value={props.info.negative_prompt} />
-              <Info label="Model" value={props.info.model} />
-              <Info label="Model Hash" value={props.info.model_hash} />
-              <Info label="Steps" value={props.info.steps} />
-              <Info label="Sampler" value={props.info.sampler} />
-              <Info label="CFG Scale" value={props.info.cfg_scale} />
-              <Info label="Seed" value={props.info.seed} />
-              <Info label="Clip Skip" value={props.info.clip_skip} />
-              <br />
-              <div>{dayjs(props.created_at).format('YYYY-DD-MM')}</div>
-            </div>
-          </div>
-        </Modal>
-      </div>
-    </>
-  )
-}
+  &::-webkit-slider-thumb {
+    position: relative;
+    display: block;
+    width: 22px;
+    height: 22px;
+    border: 2px solid rgba(0, 0, 0, 0.7);
+    border-radius: 50%;
+    border-radius: 50%;
+    appearance: none;
+    appearance: none;
+    background-color: #fff;
+    cursor: pointer;
+  }
+`
 
 export const Images = () => {
+  const [t] = useI18n()
+  const [options, setOptions] = createStore<ImageSearchOptions>({
+    limit: 50,
+    latest: true,
+    info: {},
+  })
   const [images, setImages] = createSignal<ImageData[]>([])
+  const [zoom, setZoom] = createSignal(1)
   const [fetching, setFetching] = createSignal(false)
   const [complete, setComplete] = createSignal(false)
 
-  onMount(() => {
-    ipc.galley.invoke('images/get', { limit: 50 }).then((v) => {
-      setImages(v)
-      if (v.length < 50) setComplete(true)
-    })
-  })
-
-  const fetch = () => {
+  const fetch = async () => {
     if (fetching() || complete()) return
     setFetching(true)
-    ipc.galley.invoke('images/get', { since: images().length, limit: 50 }).then((v) => {
-      if (v.length < 50) setComplete(true)
-      setTimeout(() => {
-        setFetching(false)
-        setImages((prev) => [...prev, ...v])
-      }, 500)
-    })
+    const v = await ipc.galley.invoke(
+      'images/get',
+      serialize({ since: images().length, ...options }),
+    )
+    if (v.length < 50) setComplete(true)
+    setTimeout(() => {
+      setFetching(false)
+      setImages((prev) => [...prev, ...v])
+    }, 500)
   }
+
+  onMount(fetch)
 
   return (
     <div
       class={css`
-        display: flex;
+        display: grid;
         height: calc(100vh - 50px);
-        flex-wrap: wrap;
-        align-items: center;
-        padding: 1rem;
-        gap: 0.5rem;
-        overflow-y: auto;
+        grid-template-columns: 100%;
+        grid-template-rows: 75px 1fr;
       `}
-      onScroll={(e) => {
-        if (
-          e.currentTarget.scrollHeight > 1000 &&
-          e.currentTarget.scrollHeight - e.currentTarget.scrollTop === e.currentTarget.clientHeight
-        ) {
-          fetch()
-        }
-      }}
     >
-      <For each={images()}>{(image) => <Image {...image} />}</For>
-      <Show when={fetching()}>
-        <div
-          class={css`
-            width: 100%;
-          `}
-        >
-          <RectSpinner />
-        </div>
-      </Show>
+      <div
+        class={css`
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 1rem;
+          gap: 0.5rem;
+        `}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            setComplete(false)
+            setImages([])
+            fetch()
+          }
+        }}
+      >
+        <HStack>
+          <Input
+            placeholder={t('galley/search/prompt')}
+            value={options['info']?.['prompt'] || ''}
+            onInput={(e) => setOptions('info', 'prompt', e.currentTarget.value)}
+          />
+          <Input
+            placeholder={t('galley/search/model')}
+            value={options['info']?.['model'] || ''}
+            onInput={(e) => setOptions('info', 'model', e.currentTarget.value)}
+          />
+          <IconButton
+            onClick={() => {
+              setComplete(false)
+              setImages([])
+              fetch()
+            }}
+          >
+            <IconSearch />
+          </IconButton>
+        </HStack>
+        <RangeInput
+          type="range"
+          max={2}
+          min={0.75}
+          step={0.05}
+          value={zoom()}
+          onInput={(e) => {
+            setZoom(parseFloat(e.currentTarget.value))
+          }}
+        />
+      </div>
+      <div
+        class={css`
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          padding: 1rem;
+          gap: 0.5rem;
+          overflow-y: auto;
+        `}
+        onScroll={(e) => {
+          if (
+            e.currentTarget.scrollHeight > 1000 &&
+            e.currentTarget.scrollHeight - e.currentTarget.scrollTop ===
+              e.currentTarget.clientHeight
+          ) {
+            fetch()
+          }
+        }}
+      >
+        <For each={images()}>{(image) => <Image zoom={zoom()} {...image} />}</For>
+        <Show when={fetching()}>
+          <div
+            class={css`
+              width: 100%;
+            `}
+          >
+            <RectSpinner />
+          </div>
+        </Show>
+      </div>
     </div>
   )
 }

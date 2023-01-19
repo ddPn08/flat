@@ -65,7 +65,7 @@ const TABS = {
   UIConfig,
 }
 
-export const WEBUI = () => {
+export const WebUI = () => {
   const [url, setUrl] = createSignal('')
   const [current, setCurrent] = createSignal('Launcher')
 

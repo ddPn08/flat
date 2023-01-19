@@ -15,8 +15,18 @@ export const en: LangConfig = {
     'system/git-install-error/description':
         'Please restart the app and try again. \nIf the problem persists, please contact the developer.',
 
+    'general/app/description':
+        'flat is (will be) an all-in-one toolkit for image generation AI.\nAUTOMATIC1111 StableDiffusionWebUI and a gallery function that shows generated images in a list are provided.',
+    'general/app/repository': 'Github repository',
+    'general/app/report': 'Report bug',
+
     'galley/config/paths': 'Directory to search for images',
     'galley/config/apply': 'Apply',
+    'galley/open-folder/button': 'Open folder',
+    'galley/search/title': 'Search',
+    'galley/search/prompt': 'Prompt',
+    'galley/search/model': 'ModelName',
+    'galley/search/button': 'Search',
 
     'webui/launcher/install-success/title': 'Installation was successful.',
     'webui/launcher/install-success/description': 'WebUI can be started.',
@@ -36,7 +46,7 @@ export const en: LangConfig = {
     'webui/launcher/config/update': 'Update WebUI',
 
     'webui/config/ckpt-dir': 'Checkpoints directory',
-    'webui/config/vae-path': 'VAE directory',
+    'webui/config/vae-dir': 'VAE directory',
     'webui/config/hypernetwork-dir': 'Hypernetworks directory',
     'webui/config/embeddings-dir': 'Embeddings directory',
     'webui/config/xformers': 'Enable xformers',

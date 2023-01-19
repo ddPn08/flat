@@ -165,7 +165,8 @@ class StableDiffusionWebUI {
 
     public async pull() {
         const git = this.git()
-        const log = await git.fetch().pull('origin', 'master')
+        await git.fetch()
+        const log = await git.pull('origin', 'master')
         this.ipc.emit('log', 'Updated WebUI.')
         return log
     }

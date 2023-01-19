@@ -22,6 +22,7 @@ export type ImageData = {
 export type ImageSearchOptions = Partial<{
     since: number
     limit: number
+    latest: boolean
     filename: string
     info: ImageInformation
 }>
