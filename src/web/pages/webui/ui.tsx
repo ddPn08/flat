@@ -74,7 +74,7 @@ export const UI: Component = () => {
             const name = await prompt(e.args[0])
             webview.send('ask_for_style_name', name)
           } catch (error) {
-            webview.send('ask_for_style_name', '')
+            webview.send('ask_for_style_name', null)
           }
           break
         }
