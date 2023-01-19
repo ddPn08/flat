@@ -25,7 +25,7 @@
 # インストール方法
 👇インストール方法はこちらをご覧ください。
 
-[installation-ja.md](/docs/installation.md)
+[installation-ja.md](/docs/installation-ja.md)
 
 <br >
 
