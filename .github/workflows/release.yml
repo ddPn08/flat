@@ -39,5 +39,5 @@ jobs:
           body: |-
             # Flat ${{ steps.get_tag.outputs.tag }}
             ## Download
-            - [Windows x64 Potable](https://github.com/ddPn08/flat/releases/download/${{ steps.get_tag.outputs.tag }}/${{ steps.get_tag.outputs.tag }}.exe)
-            - [Windows x64 Installer](https://github.com/ddPn08/flat/releases/download/${{ steps.get_tag.outputs.tag }}/${{ steps.get_tag.outputs.tag }}.zip)
+            - [Windows x64 Potable](https://github.com/ddPn08/flat/releases/download/${{ steps.get_tag.outputs.tag }}/flat-${{ steps.get_tag.outputs.tag }}.exe)
+            - [Windows x64 Installer](https://github.com/ddPn08/flat/releases/download/${{ steps.get_tag.outputs.tag }}/flat-${{ steps.get_tag.outputs.tag }}.zip)
