@@ -1,6 +1,25 @@
 import type { LangConfig } from './types'
 
 export const ja: LangConfig = {
+    'context-menu/labels/copy': 'コピー',
+    'context-menu/labels/copyImage': '画像をコピー',
+    'context-menu/labels/copyImageAddress': '画像のアドレスをコピー',
+    'context-menu/labels/copyLink': 'リンクのアドレスをコピー',
+    'context-menu/labels/copyVideoAddress': '動画のアドレスをコピー',
+    'context-menu/labels/cut': '切り取り',
+    'context-menu/labels/inspect': '検証',
+    'context-menu/labels/learnSpelling': 'スペルを学習',
+    'context-menu/labels/lookUpSelection': '選択されたテキストを検索',
+    'context-menu/labels/paste': '貼り付け',
+    'context-menu/labels/saveImage': '画像を保存',
+    'context-menu/labels/saveImageAs': '形式を指定して画像を保存',
+    'context-menu/labels/saveLinkAs': '形式を指定してリンクを保存',
+    'context-menu/labels/saveVideo': '動画を保存',
+    'context-menu/labels/saveVideoAs': '形式を指定して動画を保存',
+    'context-menu/labels/searchWithGoogle': 'Googleで検索',
+    'context-menu/labels/selectAll': 'すべて選択',
+    'context-menu/labels/services': 'サービス',
+
     'system/settings/lang': '言語',
     'system/settings/theme': 'テーマ',
     'system/update-available/title': 'アップデートの準備ができました。',

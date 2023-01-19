@@ -1,3 +1,3 @@
-export const ipcRenderer = window['ipcRenderer']
-export const shell = window['shell']
-export const bpath = window['bpath']
+export const ipcRenderer = require('electron/renderer').ipcRenderer
+export const shell = require('electron').shell
+export const path = require('path')

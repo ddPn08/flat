@@ -44,7 +44,6 @@ const bundle = async (run) => {
         ...config,
         entryPoints: {
             index: path.join(cwd, 'src', 'index.ts'),
-            preload: path.join(cwd, 'src', 'preload', 'index.ts'),
         },
         outdir,
         format: 'cjs',

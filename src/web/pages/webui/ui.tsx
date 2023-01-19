@@ -25,15 +25,15 @@ export const UI: Component = () => {
 
   const setup = (url: string) => {
     if (!url) return
-    const el = ref()!
-    el.addEventListener('console-message', (e) => {
+    const webview = ref()!
+    webview.addEventListener('console-message', (e) => {
       if (e.message.startsWith('flat:message:anchor-click:')) {
         const url = e.message.replace('flat:message:anchor-click:', '')
         shell.openExternal(url)
       }
     })
-    el.addEventListener('dom-ready', (e) => {
-      el.executeJavaScript(`
+    webview.addEventListener('dom-ready', (e) => {
+      webview.executeJavaScript(`
         if(typeof window['__flat_click_registered'] === 'undefined') {
           window['__flat_click_registered'] = true
           gradioApp().addEventListener('click', (e) => {

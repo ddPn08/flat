@@ -102,6 +102,7 @@ export const Image: Component<
               display: grid;
               height: 70vh;
               font-family: 'Roboto Mono';
+              gap: 1rem;
               grid-template-columns: 1fr 1fr;
               grid-template-rows: 100%;
 

@@ -1,7 +1,7 @@
 import { createEffect } from 'solid-js'
 import { createStore } from 'solid-js/store'
 
-import { bpath } from './electron'
+import { path } from './electron'
 import { ipc } from './ipc'
 
 export type Config = {
@@ -22,19 +22,19 @@ const defaultConfig: Config = {
     'system/theme': 'dark',
     'galley/paths': [],
     'webui/git/commit': 'master',
-    'webui/args/ckpt-dir': bpath.join(
+    'webui/args/ckpt-dir': path.join(
         await ipc.webui.invoke('webui/data-dir'),
         'repository',
         'models',
         'Stable-diffusion',
     ),
     'webui/args/vae-dir': '',
-    'webui/args/embeddings-dir': bpath.join(
+    'webui/args/embeddings-dir': path.join(
         await ipc.webui.invoke('webui/data-dir'),
         'repository',
         'embeddings',
     ),
-    'webui/args/hypernetwork-dir': bpath.join(
+    'webui/args/hypernetwork-dir': path.join(
         await ipc.webui.invoke('webui/data-dir'),
         'repository',
         'models',

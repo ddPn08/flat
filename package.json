@@ -60,6 +60,7 @@
     "color": "^4.2.3",
     "dayjs": "^1.11.7",
     "decorock": "^0.1.8",
+    "electron-context-menu": "^3.6.1",
     "fast-glob": "^3.2.12",
     "monaco-editor": "^0.34.1",
     "node-fetch": "^3.3.0",

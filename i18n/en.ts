@@ -1,6 +1,25 @@
 import type { LangConfig } from './types'
 
 export const en: LangConfig = {
+    'context-menu/labels/copy': 'copy',
+    'context-menu/labels/copyImage': 'copyImage',
+    'context-menu/labels/copyImageAddress': 'copyImageAddress',
+    'context-menu/labels/copyLink': 'copyLink',
+    'context-menu/labels/copyVideoAddress': 'copyVideoAddress',
+    'context-menu/labels/cut': 'cut',
+    'context-menu/labels/inspect': 'inspect',
+    'context-menu/labels/learnSpelling': 'learnSpelling',
+    'context-menu/labels/lookUpSelection': 'lookUpSelection',
+    'context-menu/labels/paste': 'paste',
+    'context-menu/labels/saveImage': 'saveImage',
+    'context-menu/labels/saveImageAs': 'saveImageAs',
+    'context-menu/labels/saveLinkAs': 'saveLinkAs',
+    'context-menu/labels/saveVideo': 'saveVideo',
+    'context-menu/labels/saveVideoAs': 'saveVideoAs',
+    'context-menu/labels/searchWithGoogle': 'searchWithGoogle',
+    'context-menu/labels/selectAll': 'selectAll',
+    'context-menu/labels/services': 'services',
+
     'system/settings/lang': 'Language',
     'system/settings/theme': 'Theme',
     'system/update-available/title': 'Update is available.',

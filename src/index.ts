@@ -1,5 +1,6 @@
 import './__setup'
 import { app, BrowserWindow } from 'electron'
+import contextMenu from 'electron-context-menu'
 import fs from 'fs'
 import path from 'path'
 
@@ -12,6 +13,8 @@ import { ipcSystem } from './features/system/ipc/server'
 import { update } from './updater'
 import type { Config } from './web/lib/config'
 
+import { dict } from '~i18n/index'
+
 export const isDev = process.env['NODE_ENV'] === 'development'
 
 export const getConfig = (): Config | null => {
@@ -23,6 +26,23 @@ export const getConfig = (): Config | null => {
     } catch (_) {}
     return null
 }
+
+app.on('web-contents-created', (e, contents) => {
+    const lang = getConfig()?.['system/lang'] || 'en'
+    const d = dict[lang]
+
+    const labels: Record<string, string> = Object.fromEntries(
+        Object.entries(d)
+            .filter(([k]) => k.startsWith('context-menu/labels'))
+            .map(([k, v]) => [k.replace('context-menu/labels/', ''), v]),
+    )
+
+    contextMenu({
+        window: contents,
+        showInspectElement: false,
+        labels,
+    })
+})
 
 app.once('ready', async () => {
     try {
@@ -58,7 +78,6 @@ const createWindow = async () => {
             webviewTag: true,
             nodeIntegration: true,
             contextIsolation: false,
-            preload: path.join(__dirname, 'preload.cjs'),
         },
         backgroundColor: '#ffffff',
     })
