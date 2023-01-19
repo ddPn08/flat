@@ -1,9 +1,14 @@
 import { useI18n } from '@solid-primitives/i18n'
 import { css, styled } from 'decorock'
 import { Component, createEffect, createSignal, on, Show, useContext } from 'solid-js'
+import { createStore } from 'solid-js/store'
 
 import { WebUIContext } from '.'
 
+import __inject_webui from '~/scripts/__inject_webui?raw'
+import { Modal } from '~/web/components/modal'
+import { Button } from '~/web/components/ui/button'
+import { Input } from '~/web/components/ui/input'
 import { VStack } from '~/web/components/ui/stack'
 import { shell } from '~/web/lib/electron'
 
@@ -21,29 +26,62 @@ const Container = styled.div`
 export const UI: Component = () => {
   const { url } = useContext(WebUIContext)
   const [ref, setRef] = createSignal<Electron.WebviewTag>()
+  const [promptData, setPromptData] = createStore({
+    open: false,
+    title: '',
+    value: '',
+    fin: false,
+    cancel: false,
+  })
   const [t] = useI18n()
+
+  const prompt = (title: string) => {
+    return new Promise((resolve, reject) => {
+      setPromptData({
+        open: true,
+        title,
+        fin: false,
+        cancel: false,
+      })
+      setInterval(() => {
+        if (!promptData.fin && !promptData.cancel) return
+        const value = promptData.value.toString()
+        setPromptData({
+          open: false,
+          title: '',
+          value: '',
+          fin: false,
+          cancel: false,
+        })
+        if (promptData.cancel) reject()
+        else resolve(value)
+      }, 100)
+    })
+  }
 
   const setup = (url: string) => {
     if (!url) return
     const webview = ref()!
-    webview.addEventListener('console-message', (e) => {
-      if (e.message.startsWith('flat:message:anchor-click:')) {
-        const url = e.message.replace('flat:message:anchor-click:', '')
-        shell.openExternal(url)
+    webview.addEventListener('ipc-message', async (e) => {
+      switch (e.channel) {
+        case 'click_anchor': {
+          const url = e.args[0]
+          shell.openExternal(url)
+          break
+        }
+        case 'ask_for_style_name': {
+          try {
+            const name = await prompt(e.args[0])
+            webview.send('ask_for_style_name', name)
+          } catch (error) {
+            webview.send('ask_for_style_name', '')
+          }
+          break
+        }
       }
     })
-    webview.addEventListener('dom-ready', (e) => {
-      webview.executeJavaScript(`
-        if(typeof window['__flat_click_registered'] === 'undefined') {
-          window['__flat_click_registered'] = true
-          gradioApp().addEventListener('click', (e) => {
-            const el = e.target
-            if(el.tagName && el.tagName === 'A'){
-              console.log('flat:message:anchor-click:' + el.href)
-            }
-          })
-        }
-      `)
+    webview.addEventListener('dom-ready', () => {
+      webview.executeJavaScript(__inject_webui)
     })
   }
 
@@ -51,6 +89,29 @@ export const UI: Component = () => {
 
   return (
     <Container>
+      <Modal isOpen={promptData.open} onClose={() => setPromptData('open', false)}>
+        <h1>{promptData.title}</h1>
+        <br />
+        <Input
+          value={promptData.value}
+          onInput={(e) => setPromptData('value', e.currentTarget.value)}
+        />
+        <br />
+        <Button
+          onClick={() => {
+            setPromptData('fin', true)
+          }}
+        >
+          OK
+        </Button>
+        <Button
+          onClick={() => {
+            setPromptData('cancel', true)
+          }}
+        >
+          Cancel
+        </Button>
+      </Modal>
       <Show
         when={url()}
         fallback={
@@ -64,7 +125,7 @@ export const UI: Component = () => {
           </VStack>
         }
       >
-        <webview ref={setRef} src={url()} />
+        <webview ref={setRef} src={url()} nodeintegration webpreferences="contextIsolation=false" />
       </Show>
     </Container>
   )
