@@ -41,6 +41,7 @@ export const en: LangConfig = {
     'webui/launcher/uninstall-env/description':
         'WebUI files such as output images are not deleted.',
     'webui/launcher/uninstall/button': 'Uninstall WebUI',
+    'webui/launcher/open-folder/button': 'Open webui folder',
 
     'webui/launcher/config/commit': 'Commit hash (or Branch name)',
     'webui/launcher/config/update': 'Update WebUI',

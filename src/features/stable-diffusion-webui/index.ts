@@ -1,4 +1,5 @@
 import type { ChildProcess } from 'child_process'
+import { shell } from 'electron'
 import fs from 'fs'
 import net, { AddressInfo } from 'net'
 import path from 'path'
@@ -44,6 +45,10 @@ class StableDiffusionWebUI {
 
         this.ipc.handle('ui-config/get', this.getConfig.bind(this, 'ui-config.json'))
         this.ipc.handle('ui-config/save', (_, str) => this.saveConfig('ui-config.json', str))
+
+        this.ipc.handle('folder/open', () =>
+            shell.showItemInFolder(path.join(this.dir, 'repository', 'launch.py')),
+        )
 
         this.ipc.handle('webui/running', () => this.ps !== null)
         this.ipc.handle('webui/launch', (_, args, commit) => this.launch(args, commit))

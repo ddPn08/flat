@@ -18,6 +18,7 @@ export interface ClientToServerEvents {
     'config/save': (str: string) => void
     'ui-config/get': () => string
     'ui-config/save': (str: string) => void
+    'folder/open': () => void
     'webui/running': () => boolean
     'webui/logs': () => string[]
     'webui/launch': (args: string, commit: string) => number

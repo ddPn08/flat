@@ -231,6 +231,9 @@ export const Launcher: Component = () => {
           >
             <IconStop />
           </StyledIconButton>
+          <Button task={() => ipc.webui.invoke('folder/open')}>
+            {t('webui/launcher/open-folder/button')}
+          </Button>
         </HStack>
       </div>
     </Container>

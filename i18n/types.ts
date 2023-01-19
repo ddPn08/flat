@@ -34,6 +34,7 @@ const LangKeys = [
     'webui/launcher/uninstall-env/title',
     'webui/launcher/uninstall-env/description',
     'webui/launcher/uninstall/button',
+    'webui/launcher/open-folder/button',
 
     'webui/launcher/config/commit',
     'webui/launcher/config/update',

@@ -17,8 +17,8 @@ export const ja: LangConfig = {
 
     'general/app/description':
         'flatは、画像生成AIのオールインワンツールキット(になる予定)です。\nAUTOMATIC1111 StableDiffusionWebUIや、生成画像を一覧で表示するギャラリー機能等が備わっています。',
-    "general/app/repository": "Githubのリポジトリ",
-    'general/app/report': "バグを報告",
+    'general/app/repository': 'Githubのリポジトリ',
+    'general/app/report': 'バグを報告',
 
     'galley/config/paths': '画像を検索するディレクトリ',
     'galley/config/apply': '適応',
@@ -36,10 +36,11 @@ export const ja: LangConfig = {
         'WebUIをインストールしますか？(これには数分かかる場合があります。)',
     'webui/launcher/not-installed/button': 'インストールする',
     'webui/launcher/not-running/title': 'WebUIは起動していません。',
-    'webui/launcher/uninstall-env/button': 'UnInstall Environment',
+    'webui/launcher/uninstall-env/button': 'Python環境をアンインストール',
     'webui/launcher/uninstall-env/title': 'Python環境をアンインストールします',
     'webui/launcher/uninstall-env/description': '出力画像等の、WebUIのファイルは削除されません。',
-    'webui/launcher/uninstall/button': 'Uninstall WebUI',
+    'webui/launcher/uninstall/button': 'WebUIをアンインストール',
+    'webui/launcher/open-folder/button': 'WebUIのフォルダを開く',
 
     'webui/launcher/config/commit': 'Commit hash (またはブランチ名)',
     'webui/launcher/config/update': 'WebUIを更新',
