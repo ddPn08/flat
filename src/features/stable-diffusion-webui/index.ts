@@ -157,6 +157,7 @@ class StableDiffusionWebUI {
         this.logs = []
         this.ps?.kill()
         this.ps = null
+        this.port = 0
     }
 
     public git() {

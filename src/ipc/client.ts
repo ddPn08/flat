@@ -30,6 +30,10 @@ export class IpcClient<
         ipcRenderer.off(`${this.key}:${key}`, listener)
     }
 
+    public removeAllListeners<K extends keyof StoC & string>(key: K) {
+        ipcRenderer.removeAllListeners(`${this.key}:${key}`)
+    }
+
     public invoke<K extends keyof CtoS & string>(
         key: K,
         ...args: Parameters<CtoS[K]>

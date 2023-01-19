@@ -72,7 +72,7 @@ export const WebUI = () => {
   onMount(async () => {
     const port = await ipc.webui.invoke('webui/port')
 
-    setUrl(port ? `http://localhost:${port}` : 'about:blank')
+    setUrl(port ? `http://localhost:${port}` : '')
   })
 
   return (

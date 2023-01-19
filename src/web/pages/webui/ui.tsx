@@ -1,6 +1,6 @@
 import { useI18n } from '@solid-primitives/i18n'
 import { css, styled } from 'decorock'
-import { Component, createSignal, onMount, Show, useContext } from 'solid-js'
+import { Component, createEffect, createSignal, on, Show, useContext } from 'solid-js'
 
 import { WebUIContext } from '.'
 
@@ -23,7 +23,8 @@ export const UI: Component = () => {
   const [ref, setRef] = createSignal<Electron.WebviewTag>()
   const [t] = useI18n()
 
-  onMount(() => {
+  const setup = (url: string) => {
+    if (!url) return
     const el = ref()!
     el.addEventListener('console-message', (e) => {
       if (e.message.startsWith('flat:message:anchor-click:')) {
@@ -33,20 +34,25 @@ export const UI: Component = () => {
     })
     el.addEventListener('dom-ready', (e) => {
       el.executeJavaScript(`
-        gradioApp().addEventListener('click', (e) => {
-          const el = e.target
-          if(el.tagName && el.tagName === 'A'){
-            console.log('flat:message:anchor-click:' + el.href)
-          }
-        })
+        if(typeof window['__flat_click_registered'] === 'undefined') {
+          window['__flat_click_registered'] = true
+          gradioApp().addEventListener('click', (e) => {
+            const el = e.target
+            if(el.tagName && el.tagName === 'A'){
+              console.log('flat:message:anchor-click:' + el.href)
+            }
+          })
+        }
       `)
     })
-  })
+  }
+
+  createEffect(on(url, setup))
 
   return (
     <Container>
       <Show
-        when={url() !== 'about:blank'}
+        when={url()}
         fallback={
           <VStack
             class={css`

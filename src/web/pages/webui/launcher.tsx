@@ -36,6 +36,7 @@ const StyledIconButton = styled(IconButton)`
 export const createArgs = () => {
   let result = ''
   for (const [key, val] of Object.entries(config)) {
+    if (typeof val === 'string' && !val) continue
     if (!key.startsWith('webui/args')) continue
     const arg = key.split('/').slice(-1)[0]
     if (arg === 'custom') result += val
@@ -90,7 +91,7 @@ export const Launcher: Component = () => {
   })
 
   onCleanup(() => {
-    ipc.webui.off('log', onLog)
+    ipc.webui.removeAllListeners('log')
   })
 
   const install = () => {
@@ -212,7 +213,7 @@ export const Launcher: Component = () => {
               setLogs([])
               ipc.webui.invoke('webui/launch', createArgs(), config['webui/git/commit'].slice(0, 6))
               ipc.webui.once('webui/close', () => {
-                setUrl('about:blank')
+                setUrl('')
                 setRunning(false)
               })
             }}
@@ -222,7 +223,7 @@ export const Launcher: Component = () => {
           </StyledIconButton>
           <StyledIconButton
             onClick={() => {
-              setUrl('about:blank')
+              setUrl('')
               setRunning(false)
               ipc.webui.invoke('webui/stop')
             }}

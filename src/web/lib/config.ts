@@ -28,12 +28,7 @@ const defaultConfig: Config = {
         'models',
         'Stable-diffusion',
     ),
-    'webui/args/vae-dir': bpath.join(
-        await ipc.webui.invoke('webui/data-dir'),
-        'repository',
-        'models',
-        'VAE',
-    ),
+    'webui/args/vae-dir': '',
     'webui/args/embeddings-dir': bpath.join(
         await ipc.webui.invoke('webui/data-dir'),
         'repository',
