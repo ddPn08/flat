@@ -7,6 +7,7 @@ import { For } from 'solid-js'
 import { Label } from '~/web/components/ui/label'
 import { Select } from '~/web/components/ui/select'
 import { Config, config, setConfig } from '~/web/lib/config'
+import Icon from '~assets/icon-512x512.png'
 
 const Container = styled.div`
   height: 100%;
@@ -64,7 +65,7 @@ export const General = () => {
           }
         `}
       >
-        <img src="/icons/icon-512x512.png" alt="" />
+        <img src={Icon} alt="" />
         <div>
           <span>v{packageJson.version}</span>
           <div>

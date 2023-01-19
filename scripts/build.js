@@ -73,7 +73,7 @@ const build = async () => {
                     },
                 ],
             },
-            icon: './icons/icon-512x512.png',
+            icon: './assets/icon-512x512.png',
             compression: 'store',
             files: ['dist/**/*', '!node_modules/**/*'],
             asar: false,

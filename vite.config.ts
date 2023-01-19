@@ -11,6 +11,7 @@ export default defineConfig({
         alias: {
             '~': path.resolve(__dirname, 'src'),
             '~i18n': path.resolve(__dirname, 'i18n'),
+            '~assets': path.resolve(__dirname, 'assets'),
             'package.json': path.resolve(__dirname, 'package.json'),
         },
     },

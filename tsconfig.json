@@ -41,6 +41,9 @@
       "~i18n/*": [
         "./i18n/*"
       ],
+      "~assets/*": [
+        "./assets/*"
+      ],
       "package.json": [
         "./package.json"
       ]

@@ -1,5 +1,5 @@
 <h1 align="center">flat</h1>
-<div align="center"><img height="256px" src="./icons/icon-512x512.png" /></div>
+<div align="center"><img height="256px" src="./assets/icon-512x512.png" /></div>
 <p align="center">AI画像生成のオールインワン (になるはず...)</p>
 <br>
 
@@ -21,9 +21,9 @@
 
 ---
 
-
 # インストール方法
-👇インストール方法はこちらをご覧ください。
+
+👇 インストール方法はこちらをご覧ください。
 
 [installation-ja.md](/docs/installation-ja.md)
 

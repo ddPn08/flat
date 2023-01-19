@@ -1,5 +1,5 @@
 <h1 align="center">flat</h1>
-<div align="center"><img height="256px" src="./icons/icon-512x512.png" /></div>
+<div align="center"><img height="256px" src="./assets/icon-512x512.png" /></div>
 <p align="center">All-in-one image generation AI (to be...)</p>
 <br>
 
@@ -22,6 +22,7 @@
 > If you get an error, please let the developer know.
 
 # How to install
+
 👇Click here for installation instructions.
 
 [installation.md](/docs/installation.md)

@@ -14,6 +14,7 @@ import {
 import { createStore } from 'solid-js/store'
 
 import { ipc } from '~/web/lib/ipc'
+import Icon from '~assets/icon-512x512.png'
 import IconCheck from '~icons/material-symbols/check-circle-outline'
 import IconClose from '~icons/material-symbols/close'
 import IconError from '~icons/material-symbols/error-circle-rounded-outline'
@@ -151,7 +152,7 @@ export const ToastProvider: Component<{ children: JSX.Element }> = (props) => {
     if (!(await ipc.system.invoke('window/is-focused'))) {
       new Notification(option.title, {
         badge: 'Flat',
-        icon: '/icons/icon-512x512.png',
+        icon: Icon,
       })
     }
     setToasts((prev) => [{ ...option, created_at }, ...prev])
