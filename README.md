@@ -41,7 +41,7 @@ No Python installation or repository cloning required!
 ![](./assets/screenshots/webui-02.png)
 ![](./assets/screenshots/webui-03.png)
 
-## Image galley
+## Image gallery
 
 Displays generated images in a list with information such as prompts.
 The image folder can be set freely.
