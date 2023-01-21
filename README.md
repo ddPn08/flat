@@ -48,5 +48,5 @@ No Python installation or repository cloning required!
 Displays generated images in a list with information such as prompts.
 The image folder can be set freely.
 
-![](./assets/screenshots/galley-01.png)
-![](./assets/screenshots/galley-02.png)
+![](./assets/screenshots/gallery-01.png)
+![](./assets/screenshots/gallery-02.png)

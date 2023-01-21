@@ -20,9 +20,9 @@ const toArrayBuffer = (buffer: Buffer) => {
     return ab
 }
 
-class Galley {
-    private readonly dir = path.join(FEATURES_PATH, 'galley')
-    private readonly ipc = new IpcServer<ServerToClientEvents, ClientToServerEvents>('galley')
+class Gallery {
+    private readonly dir = path.join(FEATURES_PATH, 'gallery')
+    private readonly ipc = new IpcServer<ServerToClientEvents, ClientToServerEvents>('gallery')
     private readonly dbFilePath = path.join(this.dir, 'db.json')
     private dirs: string[] = []
     private db: Record<string, ImageData[]> = {}
@@ -37,9 +37,9 @@ class Galley {
         }
         this.ipc.handle('dirs/update', async (_, paths) => {
             this.dirs = paths
-            await this.glob()
         })
         this.ipc.handle('images/get', (_, dir, search) => this.get(dir, search))
+        this.ipc.handle('images/glob', (_, dir) => this.glob(dir))
         this.ipc.handle('favorite/add', (_, dir, path) => this.addFav(dir, path))
         this.ipc.handle('favorite/remove', (_, dir, path) => this.removeFav(dir, path))
         this.load()
@@ -58,9 +58,8 @@ class Galley {
     }
 
     private sort() {
-        for (const [key, images] of Object.entries(this.db)) {
+        for (const [key, images] of Object.entries(this.db))
             this.db[key] = images.sort((a, b) => (a.created_at < b.created_at ? -1 : 1))
-        }
     }
 
     private save() {
@@ -84,20 +83,22 @@ class Galley {
         db[i]!.favorite = false
     }
 
-    public async glob(force?: boolean | undefined) {
+    public async glob(dir?: string) {
         if (this.globbing) return
         this.globbing = true
+        const dirs = this.dirs.slice().filter((v) => !dir || v === dir)
         await Promise.all(
-            this.dirs.map(async (cwd) => {
+            dirs.map(async (cwd) => {
                 if (!(cwd in this.db)) this.db[cwd] = []
                 const db = this.db[cwd]!
                 const files = fg.stream('**/*.png', { cwd: cwd })
+                const exists: string[] = []
                 for await (const filename of files) {
-                    if (!force && db.findIndex((v) => v.filepath === filename) !== -1) continue
                     const filepath = path.join(cwd, filename.toString())
-                    const key = filepath.toString()
-                    if (db.findIndex((v) => v.filepath === filepath) !== -1) continue
                     const stat = await fs.promises.stat(filepath)
+                    exists.push(filepath)
+                    if (db.findIndex((v) => v.filepath === filename) !== -1) continue
+                    const key = filepath.toString()
                     const buf = await fs.promises.readFile(filepath)
                     const meta = await loadMeta(toArrayBuffer(buf))
                     const info = parseMetadata(meta)
@@ -109,7 +110,13 @@ class Galley {
                             info,
                         })
                 }
-                this.db[cwd]! = db.filter((img) => img.filepath.startsWith(cwd))
+
+                this.db[cwd]! = db
+                    .filter((img) => img.filepath.startsWith(cwd) && exists.includes(img.filepath))
+                    .filter(
+                        (img, index, self) =>
+                            self.findIndex((e) => e.filepath === img.filepath) === index,
+                    )
             }),
         )
         await this.save()
@@ -117,7 +124,6 @@ class Galley {
     }
 
     public async get(cwd: string, search?: ImageSearchOptions) {
-        await this.glob()
         search = search || {}
         if (!(cwd in this.db)) return []
         const db = this.db[cwd]!
@@ -125,7 +131,7 @@ class Galley {
         const limit = search.limit || 100
         const since = search.since || 0
 
-        const files = [...db.sort((a, b) => (a.created_at < b.created_at ? -1 : 1))]
+        const files = [...db]
 
         if (typeof search.latest !== 'boolean' || search.latest) files.reverse()
 
@@ -150,4 +156,4 @@ class Galley {
     }
 }
 
-export const galley = new Galley()
+export const gallery = new Gallery()

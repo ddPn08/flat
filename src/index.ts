@@ -6,7 +6,7 @@ import path from 'path'
 
 import { FEATURES_PATH } from './constants'
 import { conda } from './features/conda'
-import { galley } from './features/gallery'
+import { gallery } from './features/gallery'
 import { git } from './features/git'
 import { webui } from './features/stable-diffusion-webui'
 import { ipcSystem } from './features/system/ipc/server'
@@ -65,7 +65,7 @@ app.once('ready', async () => {
 
     git.setup()
     conda.setup()
-    galley.setup()
+    gallery.setup()
     webui.setup()
     await createWindow()
 })

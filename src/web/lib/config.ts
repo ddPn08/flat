@@ -64,7 +64,9 @@ try {
 } catch (error) {
     saved = defaultConfig
 }
+console.log(saved)
 saved = merge(saved)
+console.log(saved)
 localStorage.setItem('config', JSON.stringify(saved))
 export const [config, setConfig] = createStore<Config>(saved)
 

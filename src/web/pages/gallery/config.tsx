@@ -62,7 +62,9 @@ export const Config: Component = () => {
       <Button
         task={() => {
           setConfig('gallery/dirs', [...dirs])
-          return ipc.galley.invoke('dirs/update', [...dirs])
+          return ipc.gallery
+            .invoke('dirs/update', [...dirs])
+            .then(() => ipc.gallery.invoke('images/glob'))
         }}
       >
         {t('gallery/config/apply')}

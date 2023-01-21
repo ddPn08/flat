@@ -40,10 +40,10 @@ export const Image: Component<
 
   const toggleFav = () => {
     if (fav() ?? props.favorite) {
-      ipc.galley.invoke('favorite/remove', props.dir, props.filepath)
+      ipc.gallery.invoke('favorite/remove', props.dir, props.filepath)
       setFav(false)
     } else {
-      ipc.galley.invoke('favorite/add', props.dir, props.filepath)
+      ipc.gallery.invoke('favorite/add', props.dir, props.filepath)
       setFav(true)
     }
   }

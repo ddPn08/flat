@@ -47,11 +47,11 @@ Python のインストールや Git の操作は必要ありません。
 
 <br >
 
-## Image galley
+## Image gallery
 
 生成した画像をプロンプト等の情報とともに一覧に表示します。
 
 画像のフォルダは自由に設定できます。
 
-![](./assets/screenshots/galley-01.png)
-![](./assets/screenshots/galley-02.png)
+![](./assets/screenshots/gallery-01.png)
+![](./assets/screenshots/gallery-02.png)

@@ -58,10 +58,10 @@ export const Images = () => {
   const [complete, setComplete] = createSignal(false)
   const [tab, setTab] = createSignal<'all' | 'favorites'>('all')
 
-  const fetch = async () => {
-    if (fetching() || complete()) return
+  const fetch = async (force?: boolean | undefined) => {
+    if (!force && (fetching() || complete())) return
     setFetching(true)
-    const v = await ipc.galley.invoke(
+    const v = await ipc.gallery.invoke(
       'images/get',
       dir(),
       serialize({ since: images().length, ...options }),
@@ -71,10 +71,12 @@ export const Images = () => {
     setImages((prev) => [...prev, ...v])
   }
 
-  const refetch = () => {
+  const refetch = async () => {
     setImages([])
     setComplete(false)
-    fetch()
+    setFetching(true)
+    await ipc.gallery.invoke('images/glob', dir())
+    fetch(true)
   }
 
   createEffect(

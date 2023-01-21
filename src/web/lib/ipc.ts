@@ -5,8 +5,8 @@ import type {
     ServerToClientEvents as CondaServerToClientEvents,
 } from '~/features/conda/ipc'
 import type {
-    ClientToServerEvents as GalleyClientToServerEvents,
-    ServerToClientEvents as GalleyServerToClientEvents,
+    ClientToServerEvents as GalleryClientToServerEvents,
+    ServerToClientEvents as GalleryServerToClientEvents,
 } from '~/features/gallery/ipc'
 import type {
     ClientToServerEvents as GitClientToServerEvents,
@@ -24,7 +24,7 @@ import type {
 export const ipc = {
     system: new IpcClient<SystemServerToClientEvents, SystemClientToServerEvents>('system'),
     conda: new IpcClient<CondaServerToClientEvents, CondaClientToServerEvents>('conda'),
-    galley: new IpcClient<GalleyServerToClientEvents, GalleyClientToServerEvents>('galley'),
+    gallery: new IpcClient<GalleryServerToClientEvents, GalleryClientToServerEvents>('gallery'),
     webui: new IpcClient<WebUIServerToClientEvents, WebUIClientToServerEvents>(
         'stable-diffusion-webui',
     ),
