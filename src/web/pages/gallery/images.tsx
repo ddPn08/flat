@@ -67,19 +67,21 @@ export const Images = () => {
       serialize({ since: images().length, ...options }),
     )
     if (v.length < 50) setComplete(true)
-    setTimeout(() => {
-      setFetching(false)
-      setImages((prev) => [...prev, ...v])
-    }, 500)
+    setFetching(false)
+    setImages((prev) => [...prev, ...v])
+  }
+
+  const refetch = () => {
+    setImages([])
+    setComplete(false)
+    fetch()
   }
 
   createEffect(
     on(tab, (tab) => {
       if (tab === 'all') setOptions('favorite', undefined)
       else if (tab === 'favorites') setOptions('favorite', true)
-      setImages([])
-      setComplete(false)
-      fetch()
+      refetch()
     }),
   )
 
@@ -107,17 +109,24 @@ export const Images = () => {
           <div
             class={css`
               padding: 1rem;
+              user-select: none;
             `}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                setComplete(false)
-                setImages([])
-                fetch()
-              }
+              if (e.key === 'Enter') refetch()
             }}
           >
-            <HStack>
-              <HStack>
+            <HStack
+              class={css`
+                align-items: center;
+                justify-content: space-between;
+              `}
+            >
+              <HStack
+                class={css`
+                  align-items: center;
+                  justify-content: center;
+                `}
+              >
                 <Input
                   placeholder={t('gallery/search/prompt')}
                   value={options['info']?.['prompt'] || ''}
@@ -128,13 +137,7 @@ export const Images = () => {
                   value={options['info']?.['model'] || ''}
                   onInput={(e) => setOptions('info', 'model', e.currentTarget.value)}
                 />
-                <IconButton
-                  onClick={() => {
-                    setComplete(false)
-                    setImages([])
-                    fetch()
-                  }}
-                >
+                <IconButton onClick={() => refetch()}>
                   <IconSearch />
                 </IconButton>
               </HStack>
@@ -152,7 +155,10 @@ export const Images = () => {
             <Select
               options={config['gallery/dirs'].map((v) => ({ label: v, value: v }))}
               value={dir()}
-              onChange={(v) => setDir(v.value)}
+              onChange={(v) => {
+                setDir(v.value)
+                refetch()
+              }}
             />
           </div>
           <div

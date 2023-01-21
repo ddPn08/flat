@@ -1,6 +1,7 @@
 import { useI18n } from '@solid-primitives/i18n'
 import { css, styled } from 'decorock'
-import { Component, For } from 'solid-js'
+import { Component, For, onMount } from 'solid-js'
+import { createStore } from 'solid-js/store'
 
 import { Button } from '~/web/components/ui/button'
 import { IconButton } from '~/web/components/ui/icon-button'
@@ -16,56 +17,52 @@ const Container = styled.div`
   text-align: left;
 `
 
-const Paths: Component = () => {
-  return (
-    <div>
-      <For each={config['gallery/dirs']}>
-        {(path, i) => (
-          <div
-            class={css`
-              display: grid;
-              align-items: center;
-              grid-template-columns: 1fr 50px;
-              grid-template-rows: 100%;
-            `}
-          >
-            <Input
-              value={path}
-              onInput={(e) => setConfig('gallery/dirs', i(), e.currentTarget.value)}
-            />
-            <IconButton
-              onClick={() => {
-                setConfig('gallery/dirs', (dirs) => dirs.filter((_, i2) => i2 !== i()))
-              }}
-            >
-              <RemoveIcon />
-            </IconButton>
-          </div>
-        )}
-      </For>
-      <br />
-      <IconButton
-        onClick={() => {
-          setConfig('gallery/dirs', (paths) => ['', ...paths])
-        }}
-      >
-        <AddIcon />
-      </IconButton>
-    </div>
-  )
-}
-
 export const Config: Component = () => {
   const [t] = useI18n()
+  const [dirs, setDirs] = createStore<string[]>([])
+
+  onMount(() => setDirs(config['gallery/dirs']))
 
   return (
     <Container>
       <Label>{t('gallery/config/paths')}</Label>
-      <Paths />
+
+      <div>
+        <For each={dirs}>
+          {(path, i) => (
+            <div
+              class={css`
+                display: grid;
+                align-items: center;
+                grid-template-columns: 1fr 50px;
+                grid-template-rows: 100%;
+              `}
+            >
+              <Input value={path} onChange={(e) => setDirs(i(), e.currentTarget.value)} />
+              <IconButton
+                onClick={() => {
+                  setDirs((dirs) => dirs.filter((_, i2) => i2 !== i()))
+                }}
+              >
+                <RemoveIcon />
+              </IconButton>
+            </div>
+          )}
+        </For>
+        <br />
+        <IconButton
+          onClick={() => {
+            setDirs((paths) => [...paths, ''])
+          }}
+        >
+          <AddIcon />
+        </IconButton>
+      </div>
       <br />
       <Button
         task={() => {
-          return ipc.galley.invoke('dirs/update', [...config['gallery/dirs']])
+          setConfig('gallery/dirs', [...dirs])
+          return ipc.galley.invoke('dirs/update', [...dirs])
         }}
       >
         {t('gallery/config/apply')}
