@@ -3,7 +3,7 @@ import { Component, createSignal, onCleanup, onMount } from 'solid-js'
 
 import { ipc } from '../../lib/ipc'
 import { Log } from '../log'
-import { Modal, ModalPanel } from '../modal'
+import { Modal } from '../modal'
 
 const Container = styled.div``
 
@@ -36,19 +36,17 @@ export const CondaInstall: Component = () => {
   return (
     <Container>
       <Modal isOpen={isOpen()} onClose={() => setIsOpen(false)}>
-        <ModalPanel>
-          <h1
-            class={css`
-              color: ${theme.colors.primary};
-              font-size: 1.25rem;
-              font-weight: bold;
-            `}
-          >
-            {message()}
-          </h1>
-          <br />
-          <Log height="50vh">{logs()}</Log>
-        </ModalPanel>
+        <h1
+          class={css`
+            color: ${theme.colors.primary};
+            font-size: 1.25rem;
+            font-weight: bold;
+          `}
+        >
+          {message()}
+        </h1>
+        <br />
+        <Log height="50vh">{logs()}</Log>
       </Modal>
     </Container>
   )

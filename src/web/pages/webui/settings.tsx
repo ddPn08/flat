@@ -3,7 +3,7 @@ import { css, styled } from 'decorock'
 import { Component, createSignal, onCleanup, Show } from 'solid-js'
 
 import { Log } from '~/web/components/log'
-import { Modal, ModalPanel } from '~/web/components/modal'
+import { Modal } from '~/web/components/modal'
 import { Button } from '~/web/components/ui/button'
 import { CheckBox } from '~/web/components/ui/checkbox'
 import { Input } from '~/web/components/ui/input'
@@ -131,11 +131,9 @@ export const Settings: Component = () => {
       </HStack>
 
       <Modal isOpen={isOpen()} onClose={() => setIsOpen(false)} closable>
-        <ModalPanel>
-          <Show when={dialog() === 'uninstall-env'}>
-            <UninstallEnv onClose={() => setIsOpen(false)} />
-          </Show>
-        </ModalPanel>
+        <Show when={dialog() === 'uninstall-env'}>
+          <UninstallEnv onClose={() => setIsOpen(false)} />
+        </Show>
       </Modal>
     </Container>
   )

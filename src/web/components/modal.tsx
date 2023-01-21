@@ -1,5 +1,7 @@
 import { css, styled } from 'decorock'
-import { Component, createSignal, JSX, onCleanup, onMount } from 'solid-js'
+import { Component, createEffect, createSignal, JSX, on } from 'solid-js'
+
+import { useFloating } from '../hooks/use-floating'
 
 const Background = styled.div`
   top: 0;
@@ -40,18 +42,21 @@ export const Modal: Component<{
   closable?: boolean
 }> = (props) => {
   const [ref, setRef] = createSignal<HTMLDivElement>()
+  const [isOpen, setIsOpen] = useFloating(ref as any)
 
-  const listener = (e: MouseEvent) => {
-    const el = ref()!
-    const isThis = el === e.target || el.contains(e.target as Node)
-    if (props.closable && props.isOpen && isThis) props.onClose()
-  }
-  onMount(() => {
-    window.addEventListener('click', listener)
-  })
-  onCleanup(() => {
-    window.removeEventListener('click', listener)
-  })
+  createEffect(
+    on(
+      () => props.isOpen,
+      (isOpen) => {
+        setIsOpen(isOpen)
+      },
+    ),
+  )
+  createEffect(
+    on(isOpen, (isOpen) => {
+      if (!isOpen) props.onClose()
+    }),
+  )
 
   return (
     <>
@@ -63,7 +68,6 @@ export const Modal: Component<{
         `}
       />
       <Container
-        ref={setRef}
         class={css`
           opacity: ${props.isOpen ? '1' : '0'};
           pointer-events: ${props.isOpen ? 'auto' : 'none'};
@@ -71,7 +75,7 @@ export const Modal: Component<{
           transition: ${props.transition || '0.2s'};
         `}
       >
-        {props.children}
+        <ModalPanel ref={setRef}>{props.children}</ModalPanel>
       </Container>
     </>
   )
