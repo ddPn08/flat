@@ -36,6 +36,7 @@ export const TabList = styled.div<{ vertical?: boolean | undefined; close?: bool
   transition: 0.2s;
 
   ${(p) => (p.vertical ? 'height: 100%' : 'width: 100%')};
+
   flex-direction: ${(p) => (p.vertical ? 'column' : 'row')};
 `
 
@@ -50,7 +51,6 @@ export const Tab = styled.div<{ selected: boolean; vertical?: boolean | undefine
   user-select: none;
   align-items: center;
   text-align: right;
-
   justify-content: ${(p) => (p.vertical ? 'flex-end' : 'center')};
   ${(p) => (p.vertical ? 'width: 100%' : 'height: 100%')};
 
@@ -61,6 +61,7 @@ export const Tab = styled.div<{ selected: boolean; vertical?: boolean | undefine
     right: ${(p) => (p.vertical ? '0' : '50')}%;
     ${(p) => `${p.vertical ? 'height' : 'width'}:${p.selected ? '30%' : '0'}`};
     ${(p) => (p.vertical ? 'width' : 'height')}: 2px;
+
     transform: ${(p) => (p.vertical ? 'translateY(50%)' : 'translateX(50%)')};
     content: '';
     transition: 0.2s;
@@ -101,9 +102,9 @@ export const TabPanel: Component<
           !unmount()
             ? css`
                 position: ${local.show ? 'static' : 'fixed'};
-                transform: translateY(${local.show ? '0' : '100%'});
                 opacity: ${local.show ? '1' : '0'};
                 pointer-events: ${local.show ? 'auto' : 'none'};
+                transform: translateY(${local.show ? '0' : '100%'});
                 transition: none;
               `
             : '',

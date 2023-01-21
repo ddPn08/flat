@@ -91,13 +91,13 @@ export const General = () => {
           <div
             class={css`
               display: grid;
+              gap: 1rem;
               grid-template-columns: 64px 1fr;
               grid-template-rows: 100%;
-              gap: 1rem;
 
               svg {
-                height: 64px;
                 width: 64px;
+                height: 64px;
               }
             `}
           >

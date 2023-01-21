@@ -4,24 +4,24 @@ import { Component, createEffect, createSignal, JSX, on } from 'solid-js'
 import { useFloating } from '../hooks/use-floating'
 
 const Background = styled.div`
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  position: fixed;
   background-color: rgba(0, 0, 0, 0.5);
 `
 
 const Container = styled.div`
+  position: fixed;
+  z-index: 100;
   top: 0;
   left: 0;
+  display: flex;
   width: 100vw;
   height: 100vh;
-  position: fixed;
-  display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 100;
+  justify-content: center;
 `
 export const ModalPanel = styled.div`
   overflow: hidden;

@@ -62,8 +62,8 @@ const Index = () => {
           return (
             <TabPanel
               class={css`
-                transition: 0.2s;
                 margin-left: ${isOpen() ? '0px' : '-150px'};
+                transition: 0.2s;
               `}
               show={isSelected()}
               unmount={label !== 'WebUI'}
