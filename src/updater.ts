@@ -51,7 +51,7 @@ export const update = async () => {
     zip.extractAllTo(path.join(app.getPath('userData'), '.next'))
     console.log('Update available')
 
-    if (!isDev) {
+    if (!isDev)
         app.on('will-quit', () => {
             const appRoot = path.join(__dirname, '../../../')
             fs.rmSync(path.join(appRoot, 'resources/app'), { recursive: true })
@@ -60,7 +60,7 @@ export const update = async () => {
                 path.join(appRoot, 'resources/app'),
             )
         })
-    }
+
     checking = false
 
     return true

@@ -100,8 +100,8 @@ export const TabPanel: Component<
           `,
           !unmount()
             ? css`
-                ${local.show ? '' : 'width: 0; height: 0;'};
                 position: ${local.show ? 'static' : 'fixed'};
+                transform: translateY(${local.show ? '0' : '100%'});
                 opacity: ${local.show ? '1' : '0'};
                 pointer-events: ${local.show ? 'auto' : 'none'};
                 transition: none;

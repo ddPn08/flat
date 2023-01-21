@@ -1,4 +1,3 @@
-import { styled } from 'decorock'
 import { Accessor, createContext, createSignal, onMount, Setter } from 'solid-js'
 
 import { Config } from './config'
@@ -9,14 +8,6 @@ import { UIConfig } from './ui-config'
 
 import { Tabs, TabPanel } from '~/web/components/ui/tabs'
 import { ipc } from '~/web/lib/ipc'
-
-const Container = styled.div`
-  display: grid;
-  height: 100vh;
-  margin: 0;
-  grid-template-columns: 100%;
-  grid-template-rows: 50px 1fr;
-`
 
 type Context = {
   url: Accessor<string>
@@ -40,7 +31,7 @@ export const WebUI = () => {
 
   onMount(async () => {
     const port = await ipc.webui.invoke('webui/port')
-    const url = `http://localhost:${port}`
+    const url = port ? `http://localhost:${port}` : ''
     if (!url || url === webUIUrl()) return
     setWebUIUrl(url)
   })

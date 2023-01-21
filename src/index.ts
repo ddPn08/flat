@@ -28,6 +28,7 @@ export const getConfig = (): Config | null => {
 }
 
 app.on('web-contents-created', (e, contents) => {
+    if (isDev) contents.openDevTools()
     const lang = getConfig()?.['system/lang'] || 'en'
     const d = dict[lang]
 
