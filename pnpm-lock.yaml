@@ -28,6 +28,7 @@ importers:
       eslint-plugin-import: ^2.27.4
       eslint-plugin-solid: ^0.9.3
       eslint-plugin-unused-imports: ^2.0.0
+      eventemitter3: ^5.0.0
       fast-glob: ^3.2.12
       monaco-editor: ^0.34.1
       node-fetch: ^3.3.0
@@ -52,6 +53,7 @@ importers:
       dayjs: 1.11.7
       decorock: 0.1.8_solid-js@1.6.9
       electron-context-menu: 3.6.1
+      eventemitter3: 5.0.0
       fast-glob: 3.2.12
       monaco-editor: 0.34.1
       node-fetch: 3.3.0
@@ -2812,6 +2814,10 @@ packages:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
     engines: {node: '>=0.10.0'}
     dev: true
+
+  /eventemitter3/5.0.0:
+    resolution: {integrity: sha512-riuVbElZZNXLeLEoprfNYoDSwTBRR44X3mnhdI1YcnENpWTCsTTVZ2zFuqQcpoyqPQIUXdiPEU0ECAq0KQRaHg==}
+    dev: false
 
   /execa/5.1.1:
     resolution: {integrity: sha512-8uSpZZocAZRBAPIEINJj3Lo9HyGitllczc27Eh5YYojjMFMn8yHMDMaUHE2Jqfq05D/wucwI4JGURyXt1vchyg==}

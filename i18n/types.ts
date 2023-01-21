@@ -39,6 +39,7 @@ const LangKeys = [
     'gallery/config/paths',
     'gallery/config/apply',
     'gallery/open-folder/button',
+    'gallery/send-to-webui/button',
     'gallery/search/title',
     'gallery/search/prompt',
     'gallery/search/model',

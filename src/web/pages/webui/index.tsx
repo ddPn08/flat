@@ -1,4 +1,4 @@
-import { Accessor, createContext, createSignal, onMount, Setter } from 'solid-js'
+import { Accessor, createContext, createSignal, onCleanup, onMount, Setter } from 'solid-js'
 
 import { Config } from './config'
 import { Launcher } from './launcher'
@@ -34,6 +34,13 @@ export const WebUI = () => {
     const url = port ? `http://localhost:${port}` : ''
     if (!url || url === webUIUrl()) return
     setWebUIUrl(url)
+  })
+
+  onMount(() => {
+    ipc.webui.local.on('tab/change', setCurrent)
+  })
+  onCleanup(() => {
+    ipc.webui.local.off('tab/change', setCurrent)
   })
 
   return (

@@ -44,6 +44,7 @@ export const en: LangConfig = {
     'gallery/config/paths': 'Directory to search for images',
     'gallery/config/apply': 'Apply',
     'gallery/open-folder/button': 'Open folder',
+    'gallery/send-to-webui/button': "Send to WebUI",
     'gallery/search/title': 'Search',
     'gallery/search/prompt': 'Prompt',
     'gallery/search/model': 'ModelName',

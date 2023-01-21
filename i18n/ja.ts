@@ -44,6 +44,7 @@ export const ja: LangConfig = {
     'gallery/config/paths': '画像を検索するディレクトリ',
     'gallery/config/apply': '適応',
     'gallery/open-folder/button': 'フォルダを開く',
+    'gallery/send-to-webui/button': "WebUIに送信",
     'gallery/search/title': '検索',
     'gallery/search/prompt': 'プロンプト',
     'gallery/search/model': 'モデル名',

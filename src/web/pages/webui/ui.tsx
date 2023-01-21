@@ -1,15 +1,25 @@
 import { useI18n } from '@solid-primitives/i18n'
 import { css, styled } from 'decorock'
-import { Component, createEffect, createSignal, on, Show, useContext } from 'solid-js'
+import {
+  Component,
+  createEffect,
+  createSignal,
+  on,
+  onCleanup,
+  onMount,
+  Show,
+  useContext,
+} from 'solid-js'
 import { createStore } from 'solid-js/store'
 
 import { WebUIContext } from '.'
 
-import __inject_webui from '~/scripts/__inject_webui?raw'
-import { Modal, ModalPanel } from '~/web/components/modal'
+import __inject_webui from '~/scripts/webui/__inject_webui.js?raw'
+import { Modal } from '~/web/components/modal'
 import { Button } from '~/web/components/ui/button'
 import { Input } from '~/web/components/ui/input'
 import { VStack } from '~/web/components/ui/stack'
+import { ipc } from '~/web/lib/ipc'
 import { shell } from '~/web/lib/node/electron'
 
 const Container = styled.div`
@@ -59,6 +69,11 @@ export const UI: Component = () => {
     })
   }
 
+  const evalWebView = (js: string) => {
+    const webview = ref()!
+    webview.executeJavaScript(js)
+  }
+
   const setup = (url: string) => {
     if (!url) return
     const webview = ref()!
@@ -85,34 +100,40 @@ export const UI: Component = () => {
     })
   }
 
+  onMount(() => {
+    ipc.webui.local.on('webui/eval', evalWebView)
+  })
+
+  onCleanup(() => {
+    ipc.webui.local.off('webui/eval', evalWebView)
+  })
+
   createEffect(on(url, setup))
 
   return (
     <Container>
       <Modal isOpen={promptData.open} onClose={() => setPromptData('open', false)}>
-        <ModalPanel>
-          <h1>{promptData.title}</h1>
-          <br />
-          <Input
-            value={promptData.value}
-            onInput={(e) => setPromptData('value', e.currentTarget.value)}
-          />
-          <br />
-          <Button
-            onClick={() => {
-              setPromptData('fin', true)
-            }}
-          >
-            OK
-          </Button>
-          <Button
-            onClick={() => {
-              setPromptData('cancel', true)
-            }}
-          >
-            Cancel
-          </Button>
-        </ModalPanel>
+        <h1>{promptData.title}</h1>
+        <br />
+        <Input
+          value={promptData.value}
+          onInput={(e) => setPromptData('value', e.currentTarget.value)}
+        />
+        <br />
+        <Button
+          onClick={() => {
+            setPromptData('fin', true)
+          }}
+        >
+          OK
+        </Button>
+        <Button
+          onClick={() => {
+            setPromptData('cancel', true)
+          }}
+        >
+          Cancel
+        </Button>
       </Modal>
       <Show
         when={url()}
@@ -127,7 +148,13 @@ export const UI: Component = () => {
           </VStack>
         }
       >
-        <webview ref={setRef} src={url()} nodeintegration webpreferences="contextIsolation=false" />
+        <webview
+          ref={setRef}
+          src={url()}
+          nodeintegration
+          disablewebsecurity
+          webpreferences="contextIsolation=false"
+        />
       </Show>
     </Container>
   )

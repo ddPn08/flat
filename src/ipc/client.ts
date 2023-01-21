@@ -1,4 +1,5 @@
 import type { IpcRendererEvent } from 'electron/renderer'
+import EventEmitter from 'eventemitter3'
 
 import { ipcRenderer } from '../web/lib/node/electron'
 
@@ -7,6 +8,8 @@ export class IpcClient<
     CtoS extends Record<string, any> = Record<string, any>,
 > {
     constructor(private readonly key: string) {}
+
+    public local = new EventEmitter()
 
     public on<K extends keyof StoC & string>(
         key: K,

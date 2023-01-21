@@ -4,6 +4,7 @@ import { css, useTheme } from 'decorock'
 import { Component, createSignal, Show } from 'solid-js'
 
 import type { ImageData } from '~/features/gallery/types'
+import send_to_webui from '~/scripts/webui/send_to_webui.js?raw'
 import { Modal } from '~/web/components/modal'
 import { Button } from '~/web/components/ui/button'
 import { IconButton } from '~/web/components/ui/icon-button'
@@ -173,6 +174,25 @@ export const Image: Component<
                   }}
                 >
                   {t('gallery/open-folder/button')}
+                </Button>
+                <Button
+                  onClick={() => {
+                    ipc.system.local.emit('main-tab/change', 'WebUI')
+                    ipc.webui.local.emit('tab/change', 'UI')
+                    console.log(
+                      send_to_webui
+                        .replace('__PNG_PATH__', `"${props.filepath.replace(/\\/g, '\\\\')}"`)
+                        .replace('__PNG_BASENAME__', '"0.png"'),
+                    )
+                    ipc.webui.local.emit(
+                      'webui/eval',
+                      send_to_webui
+                        .replace('__PNG_PATH__', `"${props.filepath.replace(/\\/g, '\\\\')}"`)
+                        .replace('__PNG_BASENAME__', '"0.png"'),
+                    )
+                  }}
+                >
+                  {t('gallery/send-to-webui/button')}
                 </Button>
                 <IconButton onClick={toggleFav}>
                   <Show when={fav() ?? props.favorite} fallback={<IconFavoriteOutline />}>
