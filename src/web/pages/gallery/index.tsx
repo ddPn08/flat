@@ -3,7 +3,7 @@ import { styled } from 'decorock'
 import { Config } from './config'
 import { Images } from './images'
 
-import { TabList } from '~/web/components/ui/tabs'
+import { Tabs } from '~/web/components/ui/tabs'
 
 const Container = styled.div`
   display: grid;
@@ -23,7 +23,7 @@ export const Gallery = () => {
   return (
     <>
       <Container>
-        <TabList tabs={TABS} />
+        <Tabs tabs={TABS} />
       </Container>
     </>
   )

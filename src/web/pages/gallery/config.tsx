@@ -19,7 +19,7 @@ const Container = styled.div`
 const Paths: Component = () => {
   return (
     <div>
-      <For each={config['galley/paths']}>
+      <For each={config['gallery/paths']}>
         {(path, i) => (
           <div
             class={css`
@@ -31,11 +31,11 @@ const Paths: Component = () => {
           >
             <Input
               value={path}
-              onInput={(e) => setConfig('galley/paths', i(), e.currentTarget.value)}
+              onInput={(e) => setConfig('gallery/paths', i(), e.currentTarget.value)}
             />
             <IconButton
               onClick={() => {
-                setConfig('galley/paths', (paths) => paths.filter((_, i2) => i2 !== i()))
+                setConfig('gallery/paths', (paths) => paths.filter((_, i2) => i2 !== i()))
               }}
             >
               <RemoveIcon />
@@ -46,7 +46,7 @@ const Paths: Component = () => {
       <br />
       <IconButton
         onClick={() => {
-          setConfig('galley/paths', (paths) => ['', ...paths])
+          setConfig('gallery/paths', (paths) => ['', ...paths])
         }}
       >
         <AddIcon />
@@ -60,16 +60,16 @@ export const Config: Component = () => {
 
   return (
     <Container>
-      <Label>{t('galley/config/paths')}</Label>
+      <Label>{t('gallery/config/paths')}</Label>
       <Paths />
       <br />
       <Button
         task={() => {
-          console.log(config['galley/paths'])
-          return ipc.galley.invoke('pathes/update', [...config['galley/paths']])
+          console.log(config['gallery/paths'])
+          return ipc.galley.invoke('pathes/update', [...config['gallery/paths']])
         }}
       >
-        {t('galley/config/apply')}
+        {t('gallery/config/apply')}
       </Button>
     </Container>
   )

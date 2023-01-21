@@ -7,7 +7,7 @@ import { Settings } from './settings'
 import { UI } from './ui'
 import { UIConfig } from './ui-config'
 
-import { TabList, TabPanel } from '~/web/components/ui/tabs'
+import { Tabs, TabPanel } from '~/web/components/ui/tabs'
 import { ipc } from '~/web/lib/ipc'
 
 const Container = styled.div`
@@ -55,7 +55,7 @@ export const WebUI = () => {
         },
       }}
     >
-      <TabList
+      <Tabs
         tabs={TABS}
         tab={([label, Comp], isSelected) => {
           return (

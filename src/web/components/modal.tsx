@@ -20,10 +20,10 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
 `
-const Panel = styled.div`
+export const ModalPanel = styled.div`
   overflow: hidden;
   width: 80%;
-  max-height: 50%;
+  max-height: 100%;
   padding: 1.5rem;
   border-radius: 1rem;
   margin: 2rem 0;
@@ -71,9 +71,7 @@ export const Modal: Component<{
           transition: ${props.transition || '0.2s'};
         `}
       >
-        <Panel>
-          <div>{props.children}</div>
-        </Panel>
+        {props.children}
       </Container>
     </>
   )

@@ -16,6 +16,7 @@ export type ImageInformation = Partial<{
 export type ImageData = {
     filepath: string
     created_at: Date
+    favorite: boolean
     info: ImageInformation
 }
 
@@ -25,4 +26,5 @@ export type ImageSearchOptions = Partial<{
     latest: boolean
     filename: string
     info: ImageInformation
+    favorite: boolean
 }>

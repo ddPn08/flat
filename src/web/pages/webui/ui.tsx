@@ -1,12 +1,12 @@
 import { useI18n } from '@solid-primitives/i18n'
 import { css, styled } from 'decorock'
-import { Component, createEffect, createSignal, on, Show, useContext } from 'solid-js'
+import { Component, createEffect, createSignal, on, onMount, Show, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
 
 import { WebUIContext } from '.'
 
 import __inject_webui from '~/scripts/__inject_webui?raw'
-import { Modal } from '~/web/components/modal'
+import { Modal, ModalPanel } from '~/web/components/modal'
 import { Button } from '~/web/components/ui/button'
 import { Input } from '~/web/components/ui/input'
 import { VStack } from '~/web/components/ui/stack'
@@ -87,30 +87,34 @@ export const UI: Component = () => {
 
   createEffect(on(url, setup))
 
+  onMount(() => console.log('mount'))
+
   return (
     <Container>
       <Modal isOpen={promptData.open} onClose={() => setPromptData('open', false)}>
-        <h1>{promptData.title}</h1>
-        <br />
-        <Input
-          value={promptData.value}
-          onInput={(e) => setPromptData('value', e.currentTarget.value)}
-        />
-        <br />
-        <Button
-          onClick={() => {
-            setPromptData('fin', true)
-          }}
-        >
-          OK
-        </Button>
-        <Button
-          onClick={() => {
-            setPromptData('cancel', true)
-          }}
-        >
-          Cancel
-        </Button>
+        <ModalPanel>
+          <h1>{promptData.title}</h1>
+          <br />
+          <Input
+            value={promptData.value}
+            onInput={(e) => setPromptData('value', e.currentTarget.value)}
+          />
+          <br />
+          <Button
+            onClick={() => {
+              setPromptData('fin', true)
+            }}
+          >
+            OK
+          </Button>
+          <Button
+            onClick={() => {
+              setPromptData('cancel', true)
+            }}
+          >
+            Cancel
+          </Button>
+        </ModalPanel>
       </Modal>
       <Show
         when={url()}

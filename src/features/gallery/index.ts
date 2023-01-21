@@ -32,15 +32,15 @@ class Galley {
         if (!fs.existsSync(this.dbFilePath)) fs.writeFileSync(this.dbFilePath, '{}')
         const config = getConfig()
         if (config) {
-            this.paths = Array.isArray(config['galley/paths']) ? config['galley/paths'] : []
+            this.paths = Array.isArray(config['gallery/paths']) ? config['gallery/paths'] : []
         }
         this.ipc.handle('pathes/update', async (_, paths) => {
             this.paths = paths
             await this.glob()
         })
-        this.ipc.handle('images/get', (_, search) => {
-            return this.get(search)
-        })
+        this.ipc.handle('images/get', (_, search) => this.get(search))
+        this.ipc.handle('favorite/add', (_, path) => this.addFav(path))
+        this.ipc.handle('favorite/remove', (_, path) => this.removeFav(path))
         this.load()
         this.glob()
     }
@@ -63,6 +63,18 @@ class Galley {
         )
     }
 
+    public addFav(path: string) {
+        const i = this.db.findIndex((v) => v.filepath === path)
+        if (i === -1) return
+        this.db[i]!.favorite = true
+    }
+
+    public removeFav(path: string) {
+        const i = this.db.findIndex((v) => v.filepath === path)
+        if (i === -1) return
+        this.db[i]!.favorite = false
+    }
+
     public async glob() {
         await Promise.all(
             this.paths.map(async (cwd) => {
@@ -79,6 +91,7 @@ class Galley {
                         this.db.push({
                             filepath: key,
                             created_at: stat.ctime,
+                            favorite: false,
                             info,
                         })
                 }
@@ -102,6 +115,7 @@ class Galley {
 
         for (const v of files.slice(since, since + limit)) {
             if (result.length >= limit) break
+            if (typeof search.favorite === 'boolean' && v.favorite !== search.favorite) continue
             if (search.filename && !path.basename(v.filepath).includes(search.filename)) continue
             if (search.info) {
                 let c = false
