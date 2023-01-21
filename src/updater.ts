@@ -35,23 +35,48 @@ const getMeta = async (): Promise<BuildMeta> => {
     return yaml.parse(text)
 }
 
-export const update = async () => {
-    if (checking) return false
+const getNext = async () => {
+    const filepath = path.join(app.getPath('userData'), '.next', 'package.json')
+    if (!fs.existsSync(filepath)) return
+
+    const txt = await fs.promises.readFile(filepath, 'utf-8')
+    try {
+        return JSON.parse(txt).version
+    } catch (_) {}
+}
+
+export const check = async () => {
+    const next = await getNext()
+    if (next) return true
+    const meta = await getMeta()
+    if (meta.version > packageJson.version) return true
+    return false
+}
+
+export const prepare = async () => {
+    if (checking) return
     checking = true
     const meta = await getMeta()
-    if (meta.version === packageJson.version) return false
+    if (meta.version === packageJson.version) return
 
     const appResponse = await fetchRelease(BASE_RELEASE_URL + 'latest/download/app.zip')
     const appBuf = Buffer.from(await appResponse.arrayBuffer())
     const md5 = crypto.createHash('md5').update(appBuf).digest('hex')
-    if (appBuf.byteLength !== meta.size) return false
-    if (md5 !== meta.md5) return false
+    if (appBuf.byteLength !== meta.size) return
+    if (md5 !== meta.md5) return
 
     const zip = new AdmZip(appBuf)
     zip.extractAllTo(path.join(app.getPath('userData'), '.next'))
     console.log('Update available')
 
+    checking = false
+
+    return
+}
+
+export const update = async () => {
     if (!isDev) {
+        if (!fs.existsSync(path.join(app.getPath('userData'), '.next'))) await prepare()
         const appRoot = path.join(__dirname, '../../../')
         fs.rmSync(path.join(appRoot, 'resources/app'), { recursive: true })
         fs.renameSync(
@@ -59,8 +84,4 @@ export const update = async () => {
             path.join(appRoot, 'resources/app'),
         )
     }
-
-    checking = false
-
-    return true
 }

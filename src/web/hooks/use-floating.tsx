@@ -1,7 +1,7 @@
 import { createEffect, createSignal, onCleanup, onMount } from 'solid-js'
 import { isServer } from 'solid-js/web'
 
-export const useFloating = (ref: () => HTMLElement) => {
+export const useFloating = (ref: () => HTMLElement, disable?: boolean | undefined) => {
   const [open, setOpen] = createSignal(false)
   const [cool, setCool] = createSignal(false)
 
@@ -15,7 +15,7 @@ export const useFloating = (ref: () => HTMLElement) => {
   const listener = (e: MouseEvent) => {
     if (cool()) return
     const isThis = ref() === e.target || ref().contains(e.target as Node)
-    if (open() && !isThis) setOpen(false)
+    if (open() && !isThis && !disable) setOpen(false)
   }
   onMount(() => {
     if (!isServer) window.addEventListener('click', listener)

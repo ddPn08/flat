@@ -20,6 +20,11 @@ const LangKeys = [
 
     'system/settings/lang',
     'system/settings/theme',
+    'system/update/latest',
+    'system/update/check',
+    'system/update/install',
+    'system/update-installed/title',
+    'system/update-installed/description',
     'system/update-available/title',
     'system/update-available/description',
     'system/git-install/title',

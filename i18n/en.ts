@@ -22,8 +22,13 @@ export const en: LangConfig = {
 
     'system/settings/lang': 'Language',
     'system/settings/theme': 'Theme',
+    'system/update/latest': 'Is up to date',
+    'system/update/check': 'Check for updates',
+    'system/update/install': 'Install',
+    'system/update-installed/title': 'Installed the update.',
+    'system/update-installed/description': 'Please restart the app.',
     'system/update-available/title': 'Update is available.',
-    'system/update-available/description': 'The update will be installed on the next boot.',
+    'system/update-available/description': 'Please update from the General page.',
     'system/git-install/title': 'Git is not installed.',
     'system/git-install/description':
         'Git must be installed to use this app. Would you like to install it?',
@@ -44,7 +49,7 @@ export const en: LangConfig = {
     'gallery/config/paths': 'Directory to search for images',
     'gallery/config/apply': 'Apply',
     'gallery/open-folder/button': 'Open folder',
-    'gallery/send-to-webui/button': "Send to WebUI",
+    'gallery/send-to-webui/button': 'Send to WebUI',
     'gallery/search/title': 'Search',
     'gallery/search/prompt': 'Prompt',
     'gallery/search/model': 'ModelName',

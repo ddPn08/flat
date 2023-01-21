@@ -10,7 +10,7 @@ import { galley } from './features/gallery'
 import { git } from './features/git'
 import { webui } from './features/stable-diffusion-webui'
 import { ipcSystem } from './features/system/ipc/server'
-import { update } from './updater'
+import { check, prepare, update } from './updater'
 import type { Config } from './web/lib/config'
 
 import { dict } from '~i18n/index'
@@ -54,7 +54,9 @@ app.once('ready', async () => {
 
     ipcSystem.handle('app/restart', () => app.relaunch())
     ipcSystem.handle('path/user-data', () => app.getPath('userData'))
-    ipcSystem.handle('update/check', update)
+    ipcSystem.handle('update/check', check)
+    ipcSystem.handle('update/prepare', prepare)
+    ipcSystem.handle('update/install', update)
     ipcSystem.handle('window/is-focused', (e) => e.sender.isFocused())
     ipcSystem.handle('config/save', (_, config) => {
         const filepath = path.join(app.getPath('userData'), 'flat-config.json')

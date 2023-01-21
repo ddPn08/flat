@@ -22,8 +22,13 @@ export const ja: LangConfig = {
 
     'system/settings/lang': '言語',
     'system/settings/theme': 'テーマ',
+    'system/update/latest': '最新の状態です',
+    'system/update/check': '更新を確認する',
+    'system/update/install': 'インストール',
+    'system/update-installed/title': '更新をインストールしました。',
+    'system/update-installed/description': 'アプリを再起動してください。',
     'system/update-available/title': 'アップデートの準備ができました。',
-    'system/update-available/description': '次回の起動時にアップデートがインストールされます。',
+    'system/update-available/description': 'Generalページから更新してください。',
     'system/git-install/title': 'Gitがインストールされていません。',
     'system/git-install/description':
         'このアプリを利用するにはGitをインストールする必要があります。インストールしますか？',
@@ -44,7 +49,7 @@ export const ja: LangConfig = {
     'gallery/config/paths': '画像を検索するディレクトリ',
     'gallery/config/apply': '適応',
     'gallery/open-folder/button': 'フォルダを開く',
-    'gallery/send-to-webui/button': "WebUIに送信",
+    'gallery/send-to-webui/button': 'WebUIに送信',
     'gallery/search/title': '検索',
     'gallery/search/prompt': 'プロンプト',
     'gallery/search/model': 'モデル名',

@@ -7,7 +7,6 @@ type Props = ComponentProps<'div'> & {
 
 export const HStack = styled.div<Props>`
   display: flex;
-  align-items: center;
   gap: ${(p) => p.gap || '0.5rem'};
 `
 

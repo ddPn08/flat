@@ -21,6 +21,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 100;
 `
 export const ModalPanel = styled.div`
   overflow: hidden;
@@ -42,7 +43,8 @@ export const Modal: Component<{
   closable?: boolean
 }> = (props) => {
   const [ref, setRef] = createSignal<HTMLDivElement>()
-  const [isOpen, setIsOpen] = useFloating(ref as any)
+  // eslint-disable-next-line solid/reactivity
+  const [isOpen, setIsOpen] = useFloating(ref as any, !props.closable)
 
   createEffect(
     on(
