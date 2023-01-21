@@ -29,6 +29,7 @@ const Info: Component<{ label: string; value?: string | number | undefined }> = 
 
 export const Image: Component<
   ImageData & {
+    dir: string
     zoom: number
   }
 > = (props) => {
@@ -39,10 +40,10 @@ export const Image: Component<
 
   const toggleFav = () => {
     if (fav() ?? props.favorite) {
-      ipc.galley.invoke('favorite/remove', props.filepath)
+      ipc.galley.invoke('favorite/remove', props.dir, props.filepath)
       setFav(false)
     } else {
-      ipc.galley.invoke('favorite/add', props.filepath)
+      ipc.galley.invoke('favorite/add', props.dir, props.filepath)
       setFav(true)
     }
   }
@@ -53,7 +54,7 @@ export const Image: Component<
         class={css`
           display: grid;
           width: auto;
-          height: ${Math.ceil(500 * props.zoom)}px;
+          height: ${Math.ceil(400 * props.zoom)}px;
           aspect-ratio: 3/5;
           background-color: ${theme.colors.primary.fade(0.95)};
           grid-template-columns: 100%;
@@ -94,7 +95,7 @@ export const Image: Component<
           `}
         >
           <div>
-            <p>{props.info.prompt?.slice(0, Math.ceil(100 * (props.zoom * props.zoom)))}...</p>
+            <p>{props.info.prompt?.slice(0, Math.ceil(50 * (props.zoom * props.zoom)))}...</p>
           </div>
           <div>
             <Show when={props.info.model} keyed>
@@ -179,11 +180,6 @@ export const Image: Component<
                   onClick={() => {
                     ipc.system.local.emit('main-tab/change', 'WebUI')
                     ipc.webui.local.emit('tab/change', 'UI')
-                    console.log(
-                      send_to_webui
-                        .replace('__PNG_PATH__', `"${props.filepath.replace(/\\/g, '\\\\')}"`)
-                        .replace('__PNG_BASENAME__', '"0.png"'),
-                    )
                     ipc.webui.local.emit(
                       'webui/eval',
                       send_to_webui

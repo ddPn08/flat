@@ -7,7 +7,7 @@ import { path } from './node/path'
 export type Config = {
     'system/lang': 'ja' | 'en'
     'system/theme': 'light' | 'dark'
-    'gallery/paths': string[]
+    'gallery/dirs': string[]
     'webui/git/commit': string
     'webui/args/ckpt-dir': string
     'webui/args/vae-dir': string
@@ -20,7 +20,7 @@ export type Config = {
 const defaultConfig: Config = {
     'system/lang': 'ja',
     'system/theme': 'dark',
-    'gallery/paths': [],
+    'gallery/dirs': [],
     'webui/git/commit': 'master',
     'webui/args/ckpt-dir': path.join(
         await ipc.webui.invoke('webui/data-dir'),

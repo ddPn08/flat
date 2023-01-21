@@ -1,7 +1,9 @@
 <h1 align="center">flat</h1>
 <div align="center"><img height="256px" src="./assets/icon-512x512.png" /></div>
 <p align="center">All-in-one image generation AI (to be...)</p>
+
 <br>
+<div align="center"><a href="https://github.com/ddPn08/flat/releases/latest"><img src="./assets/download.svg" style="width: 60%;" /></a></div>
 
 ---
 

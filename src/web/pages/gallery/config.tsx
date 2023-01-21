@@ -19,7 +19,7 @@ const Container = styled.div`
 const Paths: Component = () => {
   return (
     <div>
-      <For each={config['gallery/paths']}>
+      <For each={config['gallery/dirs']}>
         {(path, i) => (
           <div
             class={css`
@@ -31,11 +31,11 @@ const Paths: Component = () => {
           >
             <Input
               value={path}
-              onInput={(e) => setConfig('gallery/paths', i(), e.currentTarget.value)}
+              onInput={(e) => setConfig('gallery/dirs', i(), e.currentTarget.value)}
             />
             <IconButton
               onClick={() => {
-                setConfig('gallery/paths', (paths) => paths.filter((_, i2) => i2 !== i()))
+                setConfig('gallery/dirs', (dirs) => dirs.filter((_, i2) => i2 !== i()))
               }}
             >
               <RemoveIcon />
@@ -46,7 +46,7 @@ const Paths: Component = () => {
       <br />
       <IconButton
         onClick={() => {
-          setConfig('gallery/paths', (paths) => ['', ...paths])
+          setConfig('gallery/dirs', (paths) => ['', ...paths])
         }}
       >
         <AddIcon />
@@ -65,7 +65,7 @@ export const Config: Component = () => {
       <br />
       <Button
         task={() => {
-          return ipc.galley.invoke('pathes/update', [...config['gallery/paths']])
+          return ipc.galley.invoke('dirs/update', [...config['gallery/dirs']])
         }}
       >
         {t('gallery/config/apply')}

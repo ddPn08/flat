@@ -24,23 +24,24 @@ class Galley {
     private readonly dir = path.join(FEATURES_PATH, 'galley')
     private readonly ipc = new IpcServer<ServerToClientEvents, ClientToServerEvents>('galley')
     private readonly dbFilePath = path.join(this.dir, 'db.json')
-    private paths: string[] = []
-    private db: ImageData[] = []
+    private dirs: string[] = []
+    private db: Record<string, ImageData[]> = {}
+    private globbing = false
 
     public async setup() {
         if (!fs.existsSync(this.dir)) fs.mkdirSync(this.dir)
         if (!fs.existsSync(this.dbFilePath)) fs.writeFileSync(this.dbFilePath, '{}')
         const config = getConfig()
         if (config) {
-            this.paths = Array.isArray(config['gallery/paths']) ? config['gallery/paths'] : []
+            this.dirs = Array.isArray(config['gallery/dirs']) ? config['gallery/dirs'] : []
         }
-        this.ipc.handle('pathes/update', async (_, paths) => {
-            this.paths = paths
+        this.ipc.handle('dirs/update', async (_, paths) => {
+            this.dirs = paths
             await this.glob()
         })
-        this.ipc.handle('images/get', (_, search) => this.get(search))
-        this.ipc.handle('favorite/add', (_, path) => this.addFav(path))
-        this.ipc.handle('favorite/remove', (_, path) => this.removeFav(path))
+        this.ipc.handle('images/get', (_, dir, search) => this.get(dir, search))
+        this.ipc.handle('favorite/add', (_, dir, path) => this.addFav(dir, path))
+        this.ipc.handle('favorite/remove', (_, dir, path) => this.removeFav(dir, path))
         this.load()
         this.glob()
     }
@@ -49,67 +50,82 @@ class Galley {
         const saved = fs.readFileSync(this.dbFilePath, 'utf-8')
         try {
             const parsed = JSON.parse(saved)
-            if (!Array.isArray(parsed)) return (this.db = [])
+            if (Array.isArray(parsed)) return (this.db = {})
             this.db = JSON.parse(saved)
         } catch (error) {
-            this.db = []
+            this.db = {}
+        }
+    }
+
+    private sort() {
+        for (const [key, images] of Object.entries(this.db)) {
+            this.db[key] = images.sort((a, b) => (a.created_at < b.created_at ? -1 : 1))
         }
     }
 
     private save() {
-        return fs.promises.writeFile(
-            this.dbFilePath,
-            JSON.stringify(this.db.sort((a, b) => (a.created_at < b.created_at ? -1 : 1))),
-        )
+        this.sort()
+        return fs.promises.writeFile(this.dbFilePath, JSON.stringify(this.db))
     }
 
-    public addFav(path: string) {
-        const i = this.db.findIndex((v) => v.filepath === path)
+    public addFav(dir: string, path: string) {
+        if (!(dir in this.db)) return
+        const db = this.db[dir]!
+        const i = db.findIndex((v) => v.filepath === path)
         if (i === -1) return
-        this.db[i]!.favorite = true
+        db[i]!.favorite = true
     }
 
-    public removeFav(path: string) {
-        const i = this.db.findIndex((v) => v.filepath === path)
+    public removeFav(dir: string, path: string) {
+        if (!(dir in this.db)) return
+        const db = this.db[dir]!
+        const i = db.findIndex((v) => v.filepath === path)
         if (i === -1) return
-        this.db[i]!.favorite = false
+        db[i]!.favorite = false
     }
 
-    public async glob() {
+    public async glob(force?: boolean | undefined) {
+        if (this.globbing) return
+        this.globbing = true
         await Promise.all(
-            this.paths.map(async (cwd) => {
+            this.dirs.map(async (cwd) => {
+                if (!(cwd in this.db)) this.db[cwd] = []
+                const db = this.db[cwd]!
                 const files = fg.stream('**/*.png', { cwd: cwd })
                 for await (const filename of files) {
+                    if (!force && db.findIndex((v) => v.filepath === filename) !== -1) continue
                     const filepath = path.join(cwd, filename.toString())
                     const key = filepath.toString()
-                    if (this.db.findIndex((v) => v.filepath === filepath) !== -1) continue
+                    if (db.findIndex((v) => v.filepath === filepath) !== -1) continue
                     const stat = await fs.promises.stat(filepath)
                     const buf = await fs.promises.readFile(filepath)
                     const meta = await loadMeta(toArrayBuffer(buf))
                     const info = parseMetadata(meta)
                     if (info)
-                        this.db.push({
+                        db.push({
                             filepath: key,
                             created_at: stat.ctime,
                             favorite: false,
                             info,
                         })
                 }
+                this.db[cwd]! = db.filter((img) => img.filepath.startsWith(cwd))
             }),
         )
-        this.db = this.db.filter(
-            (img) => this.paths.filter((p) => img.filepath.startsWith(p)).length > 0,
-        )
         await this.save()
+        this.globbing = false
     }
 
-    public async get(search?: ImageSearchOptions) {
+    public async get(cwd: string, search?: ImageSearchOptions) {
+        await this.glob()
         search = search || {}
+        if (!(cwd in this.db)) return []
+        const db = this.db[cwd]!
         const result: ImageData[] = []
         const limit = search.limit || 100
         const since = search.since || 0
 
-        const files = [...this.db.sort((a, b) => (a.created_at < b.created_at ? -1 : 1))]
+        const files = [...db.sort((a, b) => (a.created_at < b.created_at ? -1 : 1))]
 
         if (typeof search.latest !== 'boolean' || search.latest) files.reverse()
 

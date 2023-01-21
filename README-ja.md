@@ -1,13 +1,9 @@
 <h1 align="center">flat</h1>
 <div align="center"><img height="256px" src="./assets/icon-512x512.png" /></div>
 <p align="center">AI画像生成のオールインワン (になるはず...)</p>
-<br>
 
-> **Warning**
->
-> 🚧 これはベータリリースです。予期せぬエラーが発生する可能性があります。
->
-> エラーが発生した場合は開発者にお伝えください。
+<br>
+<div align="center"><a href="https://github.com/ddPn08/flat/releases/latest"><img src="./assets/download.svg" style="width: 60%;" /></a></div>
 
 ---
 
@@ -20,6 +16,12 @@
 </div>
 
 ---
+
+> **Warning**
+>
+> 🚧 これはベータリリースです。予期せぬエラーが発生する可能性があります。
+>
+> エラーが発生した場合は開発者にお伝えください。
 
 # インストール方法
 

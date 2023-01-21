@@ -51,15 +51,14 @@ export const update = async () => {
     zip.extractAllTo(path.join(app.getPath('userData'), '.next'))
     console.log('Update available')
 
-    if (!isDev)
-        app.on('will-quit', () => {
-            const appRoot = path.join(__dirname, '../../../')
-            fs.rmSync(path.join(appRoot, 'resources/app'), { recursive: true })
-            fs.renameSync(
-                path.join(app.getPath('userData'), '.next'),
-                path.join(appRoot, 'resources/app'),
-            )
-        })
+    if (!isDev) {
+        const appRoot = path.join(__dirname, '../../../')
+        fs.rmSync(path.join(appRoot, 'resources/app'), { recursive: true })
+        fs.renameSync(
+            path.join(app.getPath('userData'), '.next'),
+            path.join(appRoot, 'resources/app'),
+        )
+    }
 
     checking = false
 

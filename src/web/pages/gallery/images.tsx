@@ -8,9 +8,11 @@ import { Image } from './image'
 import type { ImageData, ImageSearchOptions } from '~/features/gallery/types'
 import { IconButton } from '~/web/components/ui/icon-button'
 import { Input } from '~/web/components/ui/input'
+import { Select } from '~/web/components/ui/select'
 import { RectSpinner } from '~/web/components/ui/spinner'
 import { HStack } from '~/web/components/ui/stack'
 import { Tab, TabGroup, TabList } from '~/web/components/ui/tabs'
+import { config } from '~/web/lib/config'
 import { ipc } from '~/web/lib/ipc'
 import { serialize } from '~/web/lib/store-serialize'
 import IconSearch from '~icons/material-symbols/search'
@@ -42,6 +44,9 @@ const RangeInput = styled.input`
 
 export const Images = () => {
   const [t] = useI18n()
+  const [dir, setDir] = createSignal(
+    config['gallery/dirs'].length > 0 ? config['gallery/dirs'][0]! : '',
+  )
   const [options, setOptions] = createStore<ImageSearchOptions>({
     limit: 50,
     latest: true,
@@ -58,6 +63,7 @@ export const Images = () => {
     setFetching(true)
     const v = await ipc.galley.invoke(
       'images/get',
+      dir(),
       serialize({ since: images().length, ...options }),
     )
     if (v.length < 50) setComplete(true)
@@ -95,16 +101,12 @@ export const Images = () => {
             display: grid;
             height: calc(100vh - 100px);
             grid-template-columns: 100%;
-            grid-template-rows: 75px 1fr;
+            grid-template-rows: 120px 1fr;
           `}
         >
           <div
             class={css`
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
               padding: 1rem;
-              gap: 0.5rem;
             `}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
@@ -115,35 +117,42 @@ export const Images = () => {
             }}
           >
             <HStack>
-              <Input
-                placeholder={t('gallery/search/prompt')}
-                value={options['info']?.['prompt'] || ''}
-                onInput={(e) => setOptions('info', 'prompt', e.currentTarget.value)}
-              />
-              <Input
-                placeholder={t('gallery/search/model')}
-                value={options['info']?.['model'] || ''}
-                onInput={(e) => setOptions('info', 'model', e.currentTarget.value)}
-              />
-              <IconButton
-                onClick={() => {
-                  setComplete(false)
-                  setImages([])
-                  fetch()
+              <HStack>
+                <Input
+                  placeholder={t('gallery/search/prompt')}
+                  value={options['info']?.['prompt'] || ''}
+                  onInput={(e) => setOptions('info', 'prompt', e.currentTarget.value)}
+                />
+                <Input
+                  placeholder={t('gallery/search/model')}
+                  value={options['info']?.['model'] || ''}
+                  onInput={(e) => setOptions('info', 'model', e.currentTarget.value)}
+                />
+                <IconButton
+                  onClick={() => {
+                    setComplete(false)
+                    setImages([])
+                    fetch()
+                  }}
+                >
+                  <IconSearch />
+                </IconButton>
+              </HStack>
+              <RangeInput
+                type="range"
+                max={2}
+                min={0.75}
+                step={0.05}
+                value={zoom()}
+                onInput={(e) => {
+                  setZoom(parseFloat(e.currentTarget.value))
                 }}
-              >
-                <IconSearch />
-              </IconButton>
+              />
             </HStack>
-            <RangeInput
-              type="range"
-              max={2}
-              min={0.75}
-              step={0.05}
-              value={zoom()}
-              onInput={(e) => {
-                setZoom(parseFloat(e.currentTarget.value))
-              }}
+            <Select
+              options={config['gallery/dirs'].map((v) => ({ label: v, value: v }))}
+              value={dir()}
+              onChange={(v) => setDir(v.value)}
             />
           </div>
           <div
@@ -165,7 +174,7 @@ export const Images = () => {
               }
             }}
           >
-            <For each={images()}>{(image) => <Image zoom={zoom()} {...image} />}</For>
+            <For each={images()}>{(image) => <Image dir={dir()} zoom={zoom()} {...image} />}</For>
             <Show when={fetching()}>
               <div
                 class={css`
