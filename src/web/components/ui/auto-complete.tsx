@@ -77,12 +77,6 @@ export const AutoComplete: Component<PropsT> = (props) => {
 
   createEffect(() => {
     if (Array.isArray(props.suggestions)) {
-      console.log(
-        !props.value,
-        props.suggestions.filter(
-          (v) => !props.value || v.match(new RegExp('^' + props.value, 'i')),
-        ),
-      )
       setSuggestions(
         props.suggestions.filter(
           (v) => !props.value || v.match(new RegExp('^' + props.value, 'i')),

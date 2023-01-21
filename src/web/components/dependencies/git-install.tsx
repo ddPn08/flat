@@ -74,7 +74,6 @@ export const GitInstall: Component = () => {
                   ipc.git.invoke('install')
                   ipc.git.on('log', onLog)
                   ipc.git.once('install/close', (_, code) => {
-                    console.log(code)
                     if (code !== 0) setErrorInstallation(true)
                     else setFinishInstallation(true)
                     setInstalling(false)

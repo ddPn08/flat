@@ -1,6 +1,6 @@
 import { useI18n } from '@solid-primitives/i18n'
 import { css, styled } from 'decorock'
-import { Component, createEffect, createSignal, on, onMount, Show, useContext } from 'solid-js'
+import { Component, createEffect, createSignal, on, Show, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
 
 import { WebUIContext } from '.'
@@ -87,8 +87,6 @@ export const UI: Component = () => {
 
   createEffect(on(url, setup))
 
-  onMount(() => console.log('mount'))
-
   return (
     <Container>
       <Modal isOpen={promptData.open} onClose={() => setPromptData('open', false)}>
@@ -142,9 +140,10 @@ declare module 'solid-js' {
         HTMLElementDeprecatedTags,
         SVGElementTags {
       webview: Partial<
-        Electron.WebviewTag & {
-          ref: any
-        }
+        Electron.WebviewTag &
+          HTMLElement & {
+            ref: IntrinsicElements['webview'] | ((el: IntrinsicElements['webview']) => void)
+          }
       >
     }
   }

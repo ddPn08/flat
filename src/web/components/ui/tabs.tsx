@@ -4,10 +4,12 @@ import {
   Component,
   ComponentProps,
   createContext,
+  createEffect,
   createMemo,
   createSignal,
   For,
   JSX,
+  on,
   Setter,
   Show,
   splitProps,
@@ -22,17 +24,14 @@ export const TabGroup = styled.div<{ vertical?: boolean | undefined }>`
   grid-template-rows: ${(p) => (p.vertical ? '100%' : '50px 1fr')};
 `
 
-export const TabList = styled.div<{
-  vertical?: boolean | undefined
-  tabClose?: boolean | undefined
-}>`
+export const TabList = styled.div<{ vertical?: boolean | undefined; close?: boolean | undefined }>`
   display: flex;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   justify-content: flex-start;
   align-items: flex-end;
   transform: ${(p) =>
     `${p.vertical ? 'translateX' : 'translateY'}(${
-      p.tabClose ? (p.vertical ? '-150px' : '-50px') : '0'
+      p.close ? (p.vertical ? '-150px' : '-50px') : '0'
     })`};
   transition: 0.2s;
 
@@ -83,7 +82,7 @@ export const TabPanel: Component<
   {
     show: boolean
     unmount?: boolean
-    tabClose?: boolean | undefined
+    close?: boolean | undefined
     vertical?: boolean | undefined
   } & ComponentProps<'div'>
 > = (props) => {
@@ -118,17 +117,34 @@ export const TabPanel: Component<
 }
 
 export const Tabs: Component<{
+  tab?: string | number | undefined
+  onChange?: (tab: [string, number]) => void
   tabs: Record<string, Component>
-  tabClose?: boolean
+  close?: boolean
   vertical?: boolean
-  tab?: ([label, Comp]: [string, Component], isSelected: Accessor<boolean>) => JSX.Element
+  component?: ([label, Comp]: [string, Component], isSelected: Accessor<boolean>) => JSX.Element
 }> = (props) => {
   const [current, setCurrent] = createSignal(0)
   const selected = (i: number) => i === current()
+
+  createEffect(
+    on(
+      () => props.tab,
+      (tab) => {
+        if (typeof tab === 'string') setCurrent(Object.keys(props.tabs).findIndex((v) => v === tab))
+        else if (typeof tab === 'number') setCurrent(tab)
+      },
+    ),
+  )
+
+  createEffect(
+    on(current, (current) => props.onChange?.([Object.keys(props.tabs)[current]!, current])),
+  )
+
   return (
     <TabContext.Provider value={{ current, setCurrent }}>
       <TabGroup vertical={props.vertical}>
-        <TabList vertical={props.vertical} tabClose={props.tabClose}>
+        <TabList vertical={props.vertical} close={props.close}>
           <For each={Object.keys(props.tabs)}>
             {(label, i) => (
               <Tab
@@ -143,8 +159,8 @@ export const Tabs: Component<{
         </TabList>
         <For each={Object.entries(props.tabs)}>
           {([label, Comp], i) =>
-            props.tab ? (
-              props.tab([label, Comp], () => i() === current())
+            props.component ? (
+              props.component([label, Comp], () => i() === current())
             ) : (
               <TabPanel show={i() === current()}>
                 <Comp />

@@ -35,29 +35,32 @@ const TABS = {
 }
 
 export const WebUI = () => {
-  const [url, setUrl] = createSignal('')
+  const [webUIUrl, setWebUIUrl] = createSignal('')
   const [current, setCurrent] = createSignal('Launcher')
 
   onMount(async () => {
     const port = await ipc.webui.invoke('webui/port')
-
-    setUrl(port ? `http://localhost:${port}` : '')
+    const url = `http://localhost:${port}`
+    if (!url || url === webUIUrl()) return
+    setWebUIUrl(url)
   })
 
   return (
     <WebUIContext.Provider
       value={{
-        url,
-        setUrl,
+        url: webUIUrl,
+        setUrl: setWebUIUrl,
         onLaunch: (url) => {
-          setUrl(url)
+          setWebUIUrl(url)
           setCurrent('UI')
         },
       }}
     >
       <Tabs
         tabs={TABS}
-        tab={([label, Comp], isSelected) => {
+        tab={current()}
+        onChange={([label]) => setCurrent(label)}
+        component={([label, Comp], isSelected) => {
           return (
             <TabPanel show={isSelected()} unmount={label !== 'UI'}>
               <Comp />

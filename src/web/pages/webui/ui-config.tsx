@@ -20,9 +20,7 @@ export const UIConfig: Component = () => {
       try {
         JSON.parse(json)
         ipc.webui.invoke('ui-config/save', json)
-      } catch (_) {
-        console.log('err')
-      }
+      } catch (_) {}
     })
   })
 

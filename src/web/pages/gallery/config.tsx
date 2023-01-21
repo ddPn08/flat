@@ -65,7 +65,6 @@ export const Config: Component = () => {
       <br />
       <Button
         task={() => {
-          console.log(config['gallery/paths'])
           return ipc.galley.invoke('pathes/update', [...config['gallery/paths']])
         }}
       >

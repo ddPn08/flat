@@ -43,15 +43,15 @@ const Index = () => {
       <Updater />
       <MenuButton onChange={setIsOpen} />
       <Tabs
-        tabClose={!isOpen()}
+        close={!isOpen()}
         vertical
         tabs={PAGES}
-        tab={([label, Comp], isSelected) => {
+        component={([label, Comp], isSelected) => {
           return (
             <TabPanel
               class={css`
                 transition: 0.2s;
-                ${isOpen() ? '' : 'margin-left: -150px;'}
+                margin-left: ${isOpen() ? '0px' : '-150px'};
               `}
               show={isSelected()}
               unmount={label !== 'WebUI'}

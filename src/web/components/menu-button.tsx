@@ -6,9 +6,9 @@ import IconMenu from '~icons/material-symbols/menu'
 export const MenuButton: Component<{ onChange: (open: boolean) => void }> = (props) => {
   const theme = useTheme()
   const [hover, setHover] = createSignal(false)
-  const [open, setOpen] = createSignal(true)
+  const [isOpen, setIsOpen] = createSignal(true)
 
-  createEffect(on(open, (open) => props.onChange(open)))
+  createEffect(on(isOpen, (open) => props.onChange(open)))
 
   return (
     <div
@@ -33,8 +33,8 @@ export const MenuButton: Component<{ onChange: (open: boolean) => void }> = (pro
         <div
           class={css`
             position: absolute;
-            top: ${hover() || open() ? '0' : '30%'};
-            right: ${hover() || open() ? '0' : '30%'};
+            top: ${hover() || isOpen() ? '0' : '30%'};
+            right: ${hover() || isOpen() ? '0' : '30%'};
             display: inline-block;
             padding: 1rem;
             border-radius: 50%;
@@ -57,7 +57,7 @@ export const MenuButton: Component<{ onChange: (open: boolean) => void }> = (pro
               background-color: ${theme.colors.primary};
             }
           `}
-          onClick={() => setOpen(!open())}
+          onClick={() => setIsOpen(!isOpen())}
         >
           <IconMenu />
         </div>
