@@ -38,7 +38,7 @@ const Setting = styled.div`
 export const General = () => {
   const [t, { locale }] = useI18n()
   const theme = useTheme()
-  const [hasUpdate] = createResource(() => ipc.system.invoke('update/check'))
+  const [hasUpdate, {refetch}] = createResource(() => ipc.system.invoke('update/check'))
   const [isOpen, setIsOpen] = createSignal(false)
   return (
     <>
@@ -117,8 +117,12 @@ export const General = () => {
             <Button
               // eslint-disable-next-line solid/reactivity
               task={async () => {
-                await ipc.system.invoke('update/install')
-                setIsOpen(true)
+                if (hasUpdate()) {
+                  await ipc.system.invoke('update/install')
+                  setIsOpen(true)
+                } else {
+                  await refetch()
+                }
               }}
             >
               {hasUpdate() ? t('system/update/install') : t('system/update/check')}
