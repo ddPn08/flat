@@ -1,8 +1,8 @@
 import { createEffect } from 'solid-js'
 import { createStore } from 'solid-js/store'
 
-import { path } from './electron'
 import { ipc } from './ipc'
+import { path } from './node/path'
 
 export type Config = {
     'system/lang': 'ja' | 'en'

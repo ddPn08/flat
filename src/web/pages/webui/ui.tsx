@@ -10,7 +10,7 @@ import { Modal } from '~/web/components/modal'
 import { Button } from '~/web/components/ui/button'
 import { Input } from '~/web/components/ui/input'
 import { VStack } from '~/web/components/ui/stack'
-import { shell } from '~/web/lib/electron'
+import { shell } from '~/web/lib/node/electron'
 
 const Container = styled.div`
   height: 100%;

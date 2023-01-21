@@ -2,7 +2,7 @@
 import { render } from 'solid-js/web'
 
 import { App } from './app'
-import { shell } from './lib/electron'
+import { shell } from './lib/node/electron'
 
 window.addEventListener('click', (e) => {
   const el = e.target as HTMLAnchorElement

@@ -1,15 +1,14 @@
 import { createI18nContext, I18nContext } from '@solid-primitives/i18n'
-import { css, styled, useTheme } from 'decorock'
-import { Tab, TabGroup, TabList, TabPanel } from 'solid-headless'
-import { createMemo, createSignal, For } from 'solid-js'
+import { styled, useTheme } from 'decorock'
+import { createSignal } from 'solid-js'
 
 import { GitInstall } from './components/dependencies/git-install'
 import { MenuButton } from './components/menu-button'
+import { TabList, TabPanel } from './components/ui/tabs'
 import { ToastProvider } from './components/ui/toast'
 import { Updater } from './components/updater'
-import { classnames } from './lib/classnames'
 import { config } from './lib/config'
-import { Galley } from './pages/galley'
+import { Gallery } from './pages/gallery'
 import { General } from './pages/general'
 import { WebUI } from './pages/webui'
 import { ThemeProvider } from './styles'
@@ -37,20 +36,29 @@ export const App = () => {
 
 const PAGES = {
   General,
-  Galley,
+  Gallery,
   WebUI,
 }
 
 const Index = () => {
   const theme = useTheme()
   const [current, setCurrent] = createSignal('General')
-  const [open, setOpen] = createSignal(true)
+  const [isOpen, setIsOpen] = createSignal(true)
   return (
     <>
       <GitInstall />
       <Updater />
-      <MenuButton onChange={setOpen} />
-      <TabGroup
+      <MenuButton onChange={setIsOpen} />
+      <TabList
+        vertical
+        tabs={PAGES}
+        tab={([label, Comp], isSelected) => (
+          <TabPanel show={isSelected()} unmount={label !== 'WebUI'}>
+            <Comp />
+          </TabPanel>
+        )}
+      />
+      {/* <TabGroup
         class={css`
           display: flex;
           width: 100%;
@@ -74,7 +82,7 @@ const Index = () => {
                 justify-content: flex-start;
                 background-color: ${theme.colors.secondary};
                 box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-                transform: translate(${open() ? '0' : '-200px'}, 0);
+                transform: translate(${isOpen() ? '0' : '-200px'}, 0);
                 transition: 0.2s;
                 user-select: none;
               `}
@@ -134,7 +142,7 @@ const Index = () => {
                       class={css`
                         position: ${isSelected() ? 'static' : 'fixed'};
                         height: 100%;
-                        margin-left: ${open() ? '200px' : '0'};
+                        margin-left: ${isOpen() ? '200px' : '0'};
                         opacity: ${isSelected() ? '1' : '0'};
                         pointer-events: ${isSelected() ? 'auto' : 'none'};
                       `}
@@ -149,7 +157,7 @@ const Index = () => {
             </Container>
           </>
         )}
-      </TabGroup>
+      </TabGroup> */}
     </>
   )
 }

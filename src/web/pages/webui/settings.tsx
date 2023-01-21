@@ -130,7 +130,7 @@ export const Settings: Component = () => {
         {/* <Button>{t('webui/launcher/uninstall/button')}</Button> */}
       </HStack>
 
-      <Modal isOpen={isOpen()} onClose={() => setIsOpen(false)}>
+      <Modal isOpen={isOpen()} onClose={() => setIsOpen(false)} closable>
         <Show when={dialog() === 'uninstall-env'}>
           <UninstallEnv onClose={() => setIsOpen(false)} />
         </Show>

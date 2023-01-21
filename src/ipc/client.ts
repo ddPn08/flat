@@ -1,6 +1,6 @@
 import type { IpcRendererEvent } from 'electron/renderer'
 
-import { ipcRenderer } from '../web/lib/electron'
+import { ipcRenderer } from '../web/lib/node/electron'
 
 export class IpcClient<
     StoC extends Record<string, any> = Record<string, any>,

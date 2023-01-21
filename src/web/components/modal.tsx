@@ -1,101 +1,80 @@
-import { css, useTheme } from 'decorock'
-import { Dialog, DialogPanel, Transition, TransitionChild } from 'solid-headless'
-import type { Component, JSX } from 'solid-js'
+import { css, styled } from 'decorock'
+import { Component, createSignal, JSX, onCleanup, onMount } from 'solid-js'
+
+const Background = styled.div`
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+`
+
+const Container = styled.div`
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+const Panel = styled.div`
+  overflow: hidden;
+  width: 80%;
+  max-height: 50%;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin: 2rem 0;
+  background-color: ${(p) => p.theme.colors.secondary};
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  transition-property: all;
+`
 
 export const Modal: Component<{
   children: JSX.Element
   isOpen: boolean
   onClose: () => void
+  transition?: string
+  closable?: boolean
 }> = (props) => {
-  const theme = useTheme()
+  const [ref, setRef] = createSignal<HTMLDivElement>()
+
+  const listener = (e: MouseEvent) => {
+    const el = ref()!
+    const isThis = el === e.target || el.contains(e.target as Node)
+    if (props.closable && props.isOpen && isThis) props.onClose()
+  }
+  onMount(() => {
+    window.addEventListener('click', listener)
+  })
+  onCleanup(() => {
+    window.removeEventListener('click', listener)
+  })
+
   return (
-    <Transition appear show={props.isOpen}>
-      <Dialog
+    <>
+      <Background
         class={css`
-          position: fixed;
-          z-index: 100;
-          top: 0;
-          left: 0;
-          width: 100%;
-          pointer-events: ${props.isOpen ? 'all' : 'none'};
+          opacity: ${props.isOpen ? '1' : '0'};
+          pointer-events: ${props.isOpen ? 'auto' : 'none'};
+          transition: ${props.transition || '0.2s'};
         `}
-        isOpen
-        onClose={props.onClose}
+      />
+      <Container
+        ref={setRef}
+        class={css`
+          opacity: ${props.isOpen ? '1' : '0'};
+          pointer-events: ${props.isOpen ? 'auto' : 'none'};
+          transform: scale(${props.isOpen ? 1 : 0.9});
+          transition: ${props.transition || '0.2s'};
+        `}
       >
-        <TransitionChild
-          class={css`
-            width: 100%;
-            background-color: rgba(0, 0, 0, 0.25);
-          `}
-          enter={css`
-            transition-duration: 0.2s;
-            transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-          `}
-          enterFrom={css`
-            opacity: 0;
-          `}
-          enterTo={css`
-            opacity: 1;
-          `}
-          leave={css`
-            transition-duration: 0.2s;
-            transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
-          `}
-          leaveFrom={css`
-            opacity: 1;
-          `}
-          leaveTo={css`
-            opacity: 0;
-          `}
-        >
-          <TransitionChild
-            class={css`
-              display: flex;
-              width: 100%;
-              min-height: 100vh;
-              align-items: center;
-              justify-content: center;
-              padding: 0 1rem;
-            `}
-            enter={css`
-              transition-duration: 0.2s;
-              transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-            `}
-            enterFrom={css`
-              transform: scale(0.95, 0.95);
-            `}
-            enterTo={css`
-              transform: scale(1, 1);
-            `}
-            leave={css`
-              transition-duration: 0.2s;
-              transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
-            `}
-            leaveFrom={css`
-              transform: scale(1, 1);
-            `}
-            leaveTo={css`
-              transform: scale(0.95, 0.95);
-            `}
-          >
-            <DialogPanel
-              class={css`
-                overflow: hidden;
-                width: 80%;
-                max-height: 50%;
-                padding: 1.5rem;
-                border-radius: 1rem;
-                margin: 2rem 0;
-                background-color: ${theme.colors.secondary};
-                box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-                transition-property: all;
-              `}
-            >
-              {props.children}
-            </DialogPanel>
-          </TransitionChild>
-        </TransitionChild>
-      </Dialog>
-    </Transition>
+        <Panel>
+          <div>{props.children}</div>
+        </Panel>
+      </Container>
+    </>
   )
 }

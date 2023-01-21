@@ -34,7 +34,6 @@ importers:
       postcss-syntax: ^0.36.2
       prettier: ^2.8.3
       simple-git: ^3.16.0
-      solid-headless: ^0.13.0
       solid-js: ^1.6.9
       stylelint: ^14.16.1
       stylelint-config-idiomatic-order: ^9.0.0
@@ -57,7 +56,6 @@ importers:
       monaco-editor: 0.34.1
       node-fetch: 3.3.0
       simple-git: 3.16.0
-      solid-headless: 0.13.0_solid-js@1.6.9
       solid-js: 1.6.9
       yaml: 2.2.1
     devDependencies:
@@ -4620,16 +4618,6 @@ packages:
     dev: true
     optional: true
 
-  /solid-headless/0.13.0_solid-js@1.6.9:
-    resolution: {integrity: sha512-N118iPl7W5lyug4K+4c0cwM8YR2yEVJ/3H4wq6tVijATHfXfLnB1ACFI5GGHSXlwu70PUzaGSKwcVqLlloUMyA==}
-    engines: {node: '>=10'}
-    peerDependencies:
-      solid-js: ^1.2
-    dependencies:
-      solid-js: 1.6.9
-      solid-use: 0.5.0_solid-js@1.6.9
-    dev: false
-
   /solid-js/1.6.9:
     resolution: {integrity: sha512-kV3fMmm+1C2J95c8eDOPKGfZHnuAkHUBLG4hX1Xu08bXeAIPqmxuz/QdH3B8SIdTp3EatBVIyA6RCes3hrGzpg==}
     dependencies:
@@ -4645,15 +4633,6 @@ packages:
       '@babel/types': 7.20.7
       solid-js: 1.6.9
     dev: true
-
-  /solid-use/0.5.0_solid-js@1.6.9:
-    resolution: {integrity: sha512-z1AaS99SL3gNP70K4+XIVKGXDRI56m3Q6Q4X63bfgw0kaN6cwT4SAyFZAmIRjHcvf5rOMRQfNgUV4YVDha+LcQ==}
-    engines: {node: '>=10'}
-    peerDependencies:
-      solid-js: ^1.2
-    dependencies:
-      solid-js: 1.6.9
-    dev: false
 
   /sort-keys-length/1.0.1:
     resolution: {integrity: sha512-GRbEOUqCxemTAk/b32F2xa8wDTs+Z1QHOkbhJDQTvv/6G3ZkbJ+frYWsTcc7cBB3Fu4wy4XlLCuNtJuMn7Gsvw==}

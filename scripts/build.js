@@ -22,30 +22,20 @@ const bundle = async (run) => {
     const outdir = path.join(cwd, 'dist')
     if (fs.existsSync(outdir)) await fs.promises.rm(outdir, { recursive: true })
 
-    /** @type {import('esbuild').BuildOptions} */
-    const config = {
-        logLevel: 'info',
-        bundle: true,
-        sourcemap: __dev,
-        minify: !__dev,
-        entryPoints: {
-            index: path.join(cwd, 'main', 'index.ts'),
-            preload: path.join(cwd, 'preload', 'index.ts'),
-        },
-        outdir,
-        format: 'cjs',
-        platform: 'node',
-    }
     if (!run)
         await vite.build({
             configFile: './vite.config.ts',
         })
     await esbuild.build({
-        ...config,
         entryPoints: {
             index: path.join(cwd, 'src', 'index.ts'),
+            preload: path.join(cwd, 'src', 'preload.ts'),
         },
         outdir,
+        logLevel: 'info',
+        bundle: true,
+        sourcemap: __dev,
+        minify: !__dev,
         format: 'cjs',
         outExtension: {
             '.js': '.cjs',

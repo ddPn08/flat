@@ -1,5 +1,4 @@
 import { css, styled, useTheme } from 'decorock'
-import { DialogTitle } from 'solid-headless'
 import { Component, createSignal, onCleanup, onMount } from 'solid-js'
 
 import { ipc } from '../../lib/ipc'
@@ -37,8 +36,7 @@ export const CondaInstall: Component = () => {
   return (
     <Container>
       <Modal isOpen={isOpen()} onClose={() => setIsOpen(false)}>
-        <DialogTitle
-          as="h1"
+        <h1
           class={css`
             color: ${theme.colors.primary};
             font-size: 1.25rem;
@@ -46,7 +44,7 @@ export const CondaInstall: Component = () => {
           `}
         >
           {message()}
-        </DialogTitle>
+        </h1>
         <br />
         <Log height="50vh">{logs()}</Log>
       </Modal>

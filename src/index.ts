@@ -78,6 +78,7 @@ const createWindow = async () => {
             webviewTag: true,
             nodeIntegration: true,
             contextIsolation: false,
+            preload: path.join(__dirname, 'preload.cjs'),
         },
         backgroundColor: '#ffffff',
     })

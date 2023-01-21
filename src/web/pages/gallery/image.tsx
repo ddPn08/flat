@@ -7,7 +7,7 @@ import type { ImageData } from '~/features/gallery/types'
 import { Modal } from '~/web/components/modal'
 import { Button } from '~/web/components/ui/button'
 import { IconButton } from '~/web/components/ui/icon-button'
-import { shell } from '~/web/lib/electron'
+import { shell } from '~/web/lib/node/electron'
 import IconClose from '~icons/material-symbols/close'
 
 const Info: Component<{ label: string; value?: string | number | undefined }> = (props) => (
@@ -93,7 +93,7 @@ export const Image: Component<
           z-index: 100;
         `}
       >
-        <Modal isOpen={isOpen()} onClose={() => setIsOpen(false)}>
+        <Modal isOpen={isOpen()} onClose={() => setIsOpen(false)} closable>
           <IconButton onClick={() => setIsOpen(false)}>
             <IconClose />
           </IconButton>

@@ -20,6 +20,6 @@ export default defineConfig({
         Icons({
             compiler: 'solid',
         }),
-        solidPlugin(),
+        solidPlugin()
     ],
 })

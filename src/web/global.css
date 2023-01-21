@@ -28,6 +28,10 @@ body {
   word-break: break-word;
 }
 
+#root {
+  height: 100vh;
+}
+
 a {
   text-decoration: none;
 }
