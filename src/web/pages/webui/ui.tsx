@@ -141,8 +141,8 @@ export const UI: Component = () => {
           <VStack
             class={css`
               height: 100%;
-              justify-content: center;
               align-items: center;
+              justify-content: center;
             `}
           >
             <h1>{t('webui/launcher/not-running/title')}</h1>

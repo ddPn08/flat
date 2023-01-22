@@ -91,20 +91,22 @@ class Gallery {
             dirs.map(async (cwd) => {
                 if (!(cwd in this.db)) this.db[cwd] = []
                 const db = this.db[cwd]!
+                const update: ImageData[] = []
                 const files = fg.stream('**/*.png', { cwd: cwd })
                 const exists: string[] = []
                 for await (const filename of files) {
                     const filepath = path.join(cwd, filename.toString())
-                    const stat = await fs.promises.stat(filepath)
                     exists.push(filepath)
-                    if (db.findIndex((v) => v.filepath === filename) !== -1) continue
-                    const key = filepath.toString()
-                    const buf = await fs.promises.readFile(filepath)
+                    if (db.findIndex((v) => v.filepath === filepath) !== -1) continue
+                    const [stat, buf] = await Promise.all([
+                        fs.promises.stat(filepath),
+                        fs.promises.readFile(filepath),
+                    ])
                     const meta = await loadMeta(toArrayBuffer(buf))
                     const info = parseMetadata(meta)
                     if (info)
-                        db.push({
-                            filepath: key,
+                        update.push({
+                            filepath,
                             created_at: stat.ctime,
                             favorite: false,
                             info,
@@ -112,6 +114,7 @@ class Gallery {
                 }
 
                 this.db[cwd]! = db
+                    .concat(update)
                     .filter((img) => img.filepath.startsWith(cwd) && exists.includes(img.filepath))
                     .filter(
                         (img, index, self) =>

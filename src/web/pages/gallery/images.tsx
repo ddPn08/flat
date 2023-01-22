@@ -87,7 +87,7 @@ export const Images = () => {
     }),
   )
 
-  onMount(fetch)
+  onMount(refetch)
 
   return (
     <>
