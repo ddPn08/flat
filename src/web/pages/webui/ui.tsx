@@ -96,7 +96,7 @@ export const UI: Component = () => {
       }
     })
     webview.addEventListener('dom-ready', () => {
-      webview.executeJavaScript(__inject_webui)
+      webview.executeJavaScript(__inject_webui.replace('__WEBUI_URL', url))
     })
   }
 

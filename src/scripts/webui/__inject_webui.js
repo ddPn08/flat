@@ -1,7 +1,10 @@
 /* eslint-disable */
 // @ts-nocheck
 
-if (typeof window['__flat_registered'] === 'undefined') {
+const webui_url = new URL('__WEBUI_URL')
+
+if (webui_url.origin !== document.location.origin) document.location.href = webui_url.href
+else if (typeof window['__flat_registered'] === 'undefined') {
     const { ipcRenderer } = require('electron')
     window['__flat_registered'] = true
     gradioApp().addEventListener('click', (e) => {
