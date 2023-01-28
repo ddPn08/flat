@@ -75,8 +75,9 @@ export const prepare = async () => {
 }
 
 export const update = async () => {
-    if (!isDev) {
-        if (!fs.existsSync(path.join(app.getPath('userData'), '.next'))) await prepare()
+    const prepared = () => fs.existsSync(path.join(app.getPath('userData'), '.next'))
+    while (!prepared()) await prepare()
+    if (!isDev && prepared()) {
         const appRoot = path.join(__dirname, '../../../')
         fs.rmSync(path.join(appRoot, 'resources/app'), { recursive: true })
         fs.renameSync(
