@@ -13,6 +13,7 @@ import { config, setConfig } from '~/web/lib/config'
 import { ipc } from '~/web/lib/ipc'
 
 const Container = styled.div`
+  height: 100%;
   margin: 0.5rem 1rem;
   text-align: left;
 `

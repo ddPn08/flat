@@ -62,6 +62,7 @@ const Index = () => {
           return (
             <TabPanel
               class={css`
+                height: 100vh;
                 margin-left: ${isOpen() ? '0px' : '-150px'};
                 transition: 0.2s;
               `}

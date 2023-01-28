@@ -104,7 +104,7 @@ export const TabPanel: Component<
                 position: ${local.show ? 'static' : 'fixed'};
                 opacity: ${local.show ? '1' : '0'};
                 pointer-events: ${local.show ? 'auto' : 'none'};
-                transform: translateY(${local.show ? '0' : '100%'});
+                ${local.show ? '' : 'transform: translateY(100%)'};
                 transition: none;
               `
             : '',

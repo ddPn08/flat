@@ -1,3 +1,4 @@
+import { css } from 'decorock'
 import { Accessor, createContext, createSignal, onCleanup, onMount, Setter } from 'solid-js'
 
 import { Config } from './config'
@@ -60,7 +61,13 @@ export const WebUI = () => {
         onChange={([label]) => setCurrent(label)}
         component={([label, Comp], isSelected) => {
           return (
-            <TabPanel show={isSelected()} unmount={label !== 'UI'}>
+            <TabPanel
+              class={css`
+                overflow-y: auto;
+              `}
+              show={isSelected()}
+              unmount={label !== 'UI'}
+            >
               <Comp />
             </TabPanel>
           )
