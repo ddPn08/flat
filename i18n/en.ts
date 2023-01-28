@@ -79,4 +79,5 @@ export const en: LangConfig = {
     'webui/config/embeddings-dir': 'Embeddings directory',
     'webui/config/xformers': 'Enable xformers',
     'webui/config/custom': 'Custom arguments',
+    'webui/config/env': 'Environment variables',
 }

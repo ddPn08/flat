@@ -78,4 +78,5 @@ export const ja: LangConfig = {
     'webui/config/embeddings-dir': 'Embeddingsディレクトリ',
     'webui/config/xformers': 'xformersを有効にする',
     'webui/config/custom': 'コマンドライン引数',
+    'webui/config/env': "環境変数"
 }

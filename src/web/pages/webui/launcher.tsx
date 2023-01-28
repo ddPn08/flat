@@ -33,6 +33,15 @@ const StyledIconButton = styled(IconButton)`
   font-size: 1.5rem;
 `
 
+const extractString = (str: string) => {
+  const regex = /(['"])((?:\\\1|.)*?)\1/
+  const match = str.match(regex)
+  if (match) {
+    return match[2]
+  }
+  return str
+}
+
 export const createArgs = () => {
   let result = ''
   for (const [key, val] of Object.entries(config)) {
@@ -47,11 +56,22 @@ export const createArgs = () => {
   return result
 }
 
+export const createEnv = () => {
+  const result: Record<string, any> = {}
+  const envs = config['webui/settings/env'].split(',')
+  for (const v of envs) {
+    if (!v.includes('=') || v.split('=').length < 2) continue
+    const [key, value] = v.split('=')
+    result[key!] = extractString(value!)
+  }
+  return result
+}
+
 export const Launcher: Component = () => {
   const theme = useTheme()
   const toast = useToast()
   const [t] = useI18n()
-  const { setUrl, onLaunch } = useContext(WebUIContext)
+  const { url, setUrl, onLaunch } = useContext(WebUIContext)
   const [gitLog, setGitLog] = createSignal<LogResult<DefaultLogFields>['all']>([])
   const [logs, setLogs] = createSignal<string[]>([])
   const [installed, setInstalled] = createSignal(true)
@@ -63,16 +83,18 @@ export const Launcher: Component = () => {
     setLogs((prev) => [...prev, ...logs])
 
     const re = /Running on local URL: (.*)/
-    const url = logs.map((v) => v.match(re)).filter(Boolean)
-    if (url.length > 0) {
+    const urls = logs.map((v) => v.match(re)).filter(Boolean)
+    if (urls.length > 0) {
       toast({
         title: t('webui/launcher/launched/title'),
         status: 'success',
         duration: 3000,
         isClosable: true,
       })
-      const matches = url[0] as RegExpMatchArray
-      setTimeout(() => onLaunch(matches[1] as string), 500)
+      const matches = urls[0] as RegExpMatchArray
+      const newUrl = matches[1] as string
+      if (newUrl == url()) return
+      setTimeout(() => onLaunch(newUrl), 500)
     }
   }
 
@@ -211,7 +233,12 @@ export const Launcher: Component = () => {
             onClick={() => {
               setRunning(true)
               setLogs([])
-              ipc.webui.invoke('webui/launch', createArgs(), config['webui/git/commit'].slice(0, 6))
+              ipc.webui.invoke(
+                'webui/launch',
+                createArgs(),
+                createEnv(),
+                config['webui/git/commit'].slice(0, 6),
+              )
               ipc.webui.once('webui/close', () => {
                 setUrl('')
                 setRunning(false)

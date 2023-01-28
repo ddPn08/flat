@@ -118,6 +118,13 @@ export const Settings: Component = () => {
       />
       <br />
 
+      <Label>{t('webui/config/env')}</Label>
+      <Input
+        value={config['webui/settings/env']}
+        onInput={(e) => setConfig('webui/settings/env', e.currentTarget.value)}
+      />
+      <br />
+
       <HStack>
         <Button
           onClick={() => {

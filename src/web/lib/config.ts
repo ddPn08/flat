@@ -15,6 +15,7 @@ export type Config = {
     'webui/args/hypernetwork-dir': string
     'webui/args/xformers': boolean
     'webui/args/custom': string
+    'webui/settings/env': string
 }
 
 const defaultConfig: Config = {
@@ -42,6 +43,7 @@ const defaultConfig: Config = {
     ),
     'webui/args/xformers': true,
     'webui/args/custom': '',
+    'webui/settings/env': '',
 }
 
 const merge = (obj: any) => {

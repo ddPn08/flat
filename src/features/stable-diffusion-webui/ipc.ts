@@ -21,7 +21,7 @@ export interface ClientToServerEvents {
     'folder/open': () => void
     'webui/running': () => boolean
     'webui/logs': () => string[]
-    'webui/launch': (args: string, commit: string) => number
+    'webui/launch': (args: string, env: Record<string, any>, commit: string) => number
     'webui/stop': () => void
     'webui/port': () => number
     'webui/data-dir': () => string

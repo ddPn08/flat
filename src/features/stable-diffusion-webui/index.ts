@@ -51,7 +51,7 @@ class StableDiffusionWebUI {
         )
 
         this.ipc.handle('webui/running', () => this.ps !== null)
-        this.ipc.handle('webui/launch', (_, args, commit) => this.launch(args, commit))
+        this.ipc.handle('webui/launch', (_, args, env, commit) => this.launch(args, env, commit))
         this.ipc.handle('webui/stop', this.stop.bind(this))
         this.ipc.handle('webui/logs', () => this.logs)
         this.ipc.handle('webui/port', () => this.port)
@@ -125,7 +125,7 @@ class StableDiffusionWebUI {
         this.ipc.emit('log', 'Installation finished🎉')
     }
 
-    public async launch(args: string, commit = 'master') {
+    public async launch(args: string, env: Record<string, any>, commit = 'master') {
         if (this.ps) throw new Error('already running.')
         const git = this.git()
         try {
@@ -139,6 +139,7 @@ class StableDiffusionWebUI {
             cwd: path.join(this.dir, 'repository'),
             env: {
                 COMMANDLINE_ARGS: args,
+                ...env,
             },
         })
         this.ps.stdout?.on('data', (data: Buffer) => {

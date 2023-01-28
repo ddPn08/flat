@@ -72,6 +72,7 @@ const LangKeys = [
     'webui/config/hypernetwork-dir',
     'webui/config/xformers',
     'webui/config/custom',
+    'webui/config/env',
 ] as const
 export type LangKeys = (typeof LangKeys)[number]
 export type LangConfig = Record<LangKeys, string>
