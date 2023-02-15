@@ -66,7 +66,7 @@ export const WebUI = () => {
                 overflow-y: auto;
               `}
               show={isSelected()}
-              unmount={label !== 'UI'}
+              unmount={label !== 'UI' && label !== 'Launcher'}
             >
               <Comp />
             </TabPanel>

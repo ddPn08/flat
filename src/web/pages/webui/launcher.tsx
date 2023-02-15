@@ -49,7 +49,7 @@ export const createArgs = () => {
     if (!key.startsWith('webui/args')) continue
     const arg = key.split('/').slice(-1)[0]
     if (arg === 'custom') result += ` ${val}`
-    else if (typeof val === 'boolean' && val) result += ` --${arg}`
+    else if (typeof val === 'boolean') result += val ? ` --${arg}` : ''
     else if (typeof val === 'string') result += ` --${arg} "${val}"`.replace(/\\/g, '\\\\')
     else result += ` --${arg} ${val}`
   }
